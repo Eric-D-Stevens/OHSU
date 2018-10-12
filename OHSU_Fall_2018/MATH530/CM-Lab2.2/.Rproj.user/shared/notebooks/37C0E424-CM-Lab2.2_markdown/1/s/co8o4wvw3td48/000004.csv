@@ -1,0 +1,1 @@
+"0","regression_points %>% filter( criminals == min(criminals) | residual == min(residual))"

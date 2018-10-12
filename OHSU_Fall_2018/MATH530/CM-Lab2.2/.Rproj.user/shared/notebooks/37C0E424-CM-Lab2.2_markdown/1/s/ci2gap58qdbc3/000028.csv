@@ -1,0 +1,2 @@
+"0","regression_points <- get_regression_points(score_model) "
+"0","regression_points %>% filter(ID==20 | ID==23)"

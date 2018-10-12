@@ -1,0 +1,4 @@
+"0","ggplot(regression_points, aes(x = public_houses, y = residual)) +"
+"0","  geom_point() +"
+"0","  labs(x = ""Public Houses"", y = ""Residual"") +"
+"0","  geom_hline(yintercept = 0, col = ""blue"", size = 1)"
