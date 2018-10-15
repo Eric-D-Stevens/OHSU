@@ -1,4 +1,0 @@
-"0","ggplot(crime, aes(public_houses, criminals)) + geom_point()"
-"2","Warning:"
-"2"," closing unused connection 3 (https://ohsu-math630-fall-2018.netlify.com/data/beerhall.dat)
-"
