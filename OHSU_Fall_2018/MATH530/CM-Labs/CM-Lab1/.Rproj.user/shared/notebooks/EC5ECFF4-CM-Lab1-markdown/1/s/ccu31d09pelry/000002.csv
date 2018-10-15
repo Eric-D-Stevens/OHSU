@@ -1,0 +1,1 @@
+"0","ggplot(crime, aes(public_houses, criminals)) + geom_point()"

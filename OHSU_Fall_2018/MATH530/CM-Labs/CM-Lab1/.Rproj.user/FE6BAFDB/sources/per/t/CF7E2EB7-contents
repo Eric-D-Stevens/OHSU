@@ -1,0 +1,128 @@
+---
+title: "CM-Lab1-markdown"
+author: "Eric Stevens"
+date: "10/2/2018"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## 1: Overview
+
+Load required packages:
+```{r}
+library(moderndive)
+library(tidyverse)
+library(skimr)
+```
+
+## 2: The data
+
+Set the column names:
+```{r}
+crimenames <- c("county", "region_name", "region_code",
+               "criminals", "public_houses", "school_attendance",
+               "worship_attendance")
+```
+Load the data:
+
+```{r}
+crime <- read_table("https://ohsu-math630-fall-2018.netlify.com/data/beerhall.dat",
+                    col_names = crimenames)
+```
+
+
+## 3: Basic
+
+* **Independent variable:** number of pubs 
+* **Dependent variable:** criminals
+* **Minimize:** sum of the squared risiduals
+* **Basic Regression:** regression with one independent variable
+
+$$\hat{criminals} = b_0 + b_1{pubs}$$
+
+## 4: EDA
+
+* Raw Values:
+```{r}
+crime
+```
+* Summary statistics of variables of interest:
+```{r}
+crime %>%
+  skim()
+```
+```{r}
+ggplot(crime, aes(public_houses, criminals)) + geom_point()
+```
+
+
+### 4.1 Look at the data
+
+* Get number of counties using ```distinct```:
+```{r}
+distinct(crime, county)
+```
+
+There are 40 counties in this dataset.
+
+* Use ```glimpse``` to look at variables:
+
+```{r}
+glimpse(crime)
+```
+
+**Dependent:** ```criminals```
+
+**Independent:** ```public_houses```
+
+### 4.2: Look at summary statistics
+
+* Select ```public_house``` and ```criminals`` from dataset:
+
+```{r}
+pub_crime <- select(crime, public_houses, criminals)
+
+pub_crime
+```
+
+* ```skim()``` dependent and independent variables:
+
+```{r}
+skim(pub_crime)
+```
+
+* Calculate correlation coefficent:
+
+```{r}
+summarise(pub_crime, cor(criminals, public_houses))
+```
+
+Corelation: .463
+
+### 4.3: Visualize the data
+
+```{r}
+ggplot(pub_crime, aes(x = public_houses, y = criminals)) +
+  geom_point() +
+  labs(x = "Public Houses", y = "Criminals", 
+       title = "Relationship of Criminals and Public Houses") +  
+  geom_smooth(method = "lm", se = F)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
