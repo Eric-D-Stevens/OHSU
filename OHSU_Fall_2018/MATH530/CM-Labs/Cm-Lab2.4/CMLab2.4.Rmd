@@ -1,0 +1,198 @@
+---
+title: "CM Lab 2.4"
+author: "Eric Stevens"
+date: "10/16/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Environment Initialization
+```{r}
+library(fivethirtyeight) # new to you!
+library(moderndive)
+library(skimr)
+library(tidyverse)
+library(GGally) # new to you!
+library(corrr)
+```
+
+## Data
+
+The data we are interest is a subset of `hate_crimes` data set. The variables
+we are interested in have the following meanings:
+
+**avg_hatecrimes_per_100k_fbi:**
+Average annual hate crimes per 100,000 population, FBI, 2010-2015
+
+**gini_index:**
+Gini Index, 2015
+
+**share_pop_hs:**
+Share of adults 25 and older with a high-school degree, 2009
+
+**share_vote_trump:**
+Share of 2016 U.S. presidential voters who voted for Donald Trump
+
+## EDA Part 1
+
+### Raw Data
+```{r}
+glimpse(hate_crimes)  
+```
+
+The data is made up of 12 variables, 11 numerical and 1 categorical, the state.
+There is one row per state. 
+
+```{r}
+hate_crimes %>% 
+  count(state, sort = TRUE)
+```
+
+From the table we can see that the data includes all 50 states and the 
+District of Colombia.
+
+
+
+### Summary Statistics
+
+```{r}
+crime <- select(hate_crimes, 
+                    avg_hatecrimes_per_100k_fbi,
+                    share_pop_hs,
+                    gini_index,
+                    share_vote_trump)
+
+```
+
+
+```{r}
+skim(crime)
+```
+
+
+
+### Visualizations:
+```{r}
+ggplot(crime, aes(x = avg_hatecrimes_per_100k_fbi)) +
+  geom_density() +
+  labs(x = "", title = "Hate Crimes")
+```
+
+```{r}
+# Histogram of share_pop_hs (IV):
+ggplot(crime, aes(x = share_pop_hs)) +
+  geom_density() +
+  labs(x = "", title = "HS")
+```
+
+```{r}
+# Histogram of gini (IV):
+ggplot(crime, aes(x = gini_index)) +
+  geom_density() +
+  labs(x = "", title = "Gini")
+```
+
+```{r}
+# Histogram of trump (IV):
+ggplot(crime, aes(x = share_vote_trump)) +
+  geom_density() +
+  labs(x = "", title = "Trump")
+
+```
+
+```{r}
+hate_demo <- crime %>% 
+  mutate(
+    cat_trump = case_when(
+      share_vote_trump < .5 ~ "less than half", 
+      TRUE ~ "more than half"
+      )) %>% 
+  mutate(cat_trump = as.factor(cat_trump)) %>% 
+  select(-share_vote_trump)
+```
+
+
+## EDA Part 2
+Now lets look at the way each variable correlates to the variable of interest.
+
+```{r}
+correlate(select(crime, avg_hatecrimes_per_100k_fbi, gini_index))
+correlate(select(crime, avg_hatecrimes_per_100k_fbi, share_pop_hs))
+correlate(select(crime, avg_hatecrimes_per_100k_fbi, share_vote_trump))
+```
+
+There is a 0.4212719 correlation between hate crimes and gini index value.
+There is a 0.1641476 correlation between hate crimes and high school grad rate.
+There is a 0.5045316 correlation between hate crimes and trump voter rate.
+
+```{r}
+ggplot(crime, aes(x = share_pop_hs, y = avg_hatecrimes_per_100k_fbi)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+
+ggplot(crime, aes(x = gini_index, y = avg_hatecrimes_per_100k_fbi)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+
+ggplot(crime, aes(x = share_vote_trump, y = avg_hatecrimes_per_100k_fbi)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+
+```
+
+```{r}
+ggpairs(hate_demo, aes(color = cat_trump))
+```
+
+
+
+
+
+## Multiple Regression Model
+
+Now we will 
+
+```{r}
+hate_crime_model <- lm( avg_hatecrimes_per_100k_fbi ~ gini_index + share_pop_hs, data=crime)
+get_regression_table(hate_crime_model)
+
+```
+
+```{r}
+summary(hate_crime_model)
+```
+
+The regression table seems to indicate that when you combine the two 
+independent variables into the model you end up with a very steep line. 
+There is an intercept at -54 hate crimes, which is not possible, with a rise
+of 64 hate crimes for a movement of one in the positive gini index axis and
+a rise in 34 hate crimes for moving to 100 percent of the population HS 
+educated.
+
+This is drastically different than what we saw in the simple models, where 
+there were not very steep lines cutting through the data. The multi-
+regression seems to have caused a steep cut up through the data.
+
+
+```{r}
+library(plotly)
+dim_scatter <- plot_ly(crime, 
+                       x = ~share_pop_hs, 
+                       y = ~gini_index, 
+                       z = ~avg_hatecrimes_per_100k_fbi) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = 'HS'),
+                     yaxis = list(title = 'Gini'),
+                     zaxis = list(title = 'Hate Crimes')))
+dim_scatter
+
+```
+
+
+
+
+
+
