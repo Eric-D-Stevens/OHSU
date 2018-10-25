@@ -147,3 +147,28 @@ mt(Height,List,Out) :-
 	NewHeight is Height-1,
 	mt(NewHeight, [Top|List],Out).
 
+
+dc(X,Y) :-
+	block(X),
+	block(Y),
+	color(X,CX),
+	color(Y,CY),
+	not(CX=CY).
+
+mc(1,List,Out) :- 
+	Out = List.
+mc(Height,[Tl|List],Out) :-
+	Height > 1,
+	Height < 14,
+	block(Top),
+	bl(Top,List),
+	dc(Top,Tl),
+	NewHeight is Height-1,
+	mc(NewHeight, [Top|[Tl|List]],Out).
+
+
+
+
+
+
+
