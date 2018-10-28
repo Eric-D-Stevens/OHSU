@@ -155,6 +155,7 @@ dc(X,Y) :-
 	color(Y,CY),
 	not(CX=CY).
 
+
 mc(1,List,Out) :- 
 	Out = List.
 mc(Height,[Tl|List],Out) :-
@@ -167,7 +168,8 @@ mc(Height,[Tl|List],Out) :-
 	mc(NewHeight, [Top|[Tl|List]],Out).
 
 
-
+mighty(Height, List) :- 
+	mc(Height, _, List).
 
 
 
