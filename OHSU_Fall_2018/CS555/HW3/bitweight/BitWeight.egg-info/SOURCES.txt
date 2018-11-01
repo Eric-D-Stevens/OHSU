@@ -1,0 +1,8 @@
+README.md
+bitweight.cpp
+setup.py
+BitWeight.egg-info/PKG-INFO
+BitWeight.egg-info/SOURCES.txt
+BitWeight.egg-info/dependency_links.txt
+BitWeight.egg-info/requires.txt
+BitWeight.egg-info/top_level.txt
