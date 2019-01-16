@@ -383,7 +383,7 @@ def main():
 #### 3. Rank Frequency Plot
 ![alt text](rand_freq.png)
 
-
+#### 4. 20 Most Common Words
 ```
 The 20 most common words are: 
 [1237350, 'THE']
@@ -406,6 +406,10 @@ The 20 most common words are:
 [101403, 'AS']
 [100442, 'BY']
 [88670, 'HE']
+```
+
+#### 5/6. 20 Most Common Words After Stop Word Removal
+```
 The 20 most common words after stopword removal are: 
 [205514, 'TAIWAN']
 [199427, "'S"]
@@ -427,6 +431,14 @@ The 20 most common words after stopword removal are:
 [33332, 'PEOPLE']
 [31719, 'NEW']
 [29306, 'CHINESE']
+```
+
+
+### Word Association Metrics
+
+#### 30 Highest PMI Values With No Threshold
+
+```
 Loading Objects
 building probabilities
 Building List
@@ -461,6 +473,28 @@ The 30 highest PMI pairs with threshold 0 are:
 [17149316.0, 'NHAVA', 'SHEVA']
 [17149316.0, 'JINGOISTIC', 'MORON']
 [17149316.0, 'KHALIFAH', 'AL-THANI']
+```
+
+We can see that with no threshold, all the pairs with the highest PMI values consist of two tokens that 
+probably have very low unigram probabilities. Another thing to notice is that they all have the same exact
+value. My best guess is that this indicates that these are instances where both tokens appear only once 
+in the corpus. This results in a numerator of 1 beacause of a gurenteed condition, and a denominator of 
+one over the total number of tokens. As a matter of fact 1/(1/tokens) = tokens, which is exactly what that 
+number is.
+
+#### Experimenting With The Threshold
+
+As the threshold goes higher and higher we seem to get more and more common two token expressions.
+With no threshold we see high PMI pairs consisting of two random strings that are extreemly unlikely to 
+be seen individually let alone together.
+
+At a threshold of 100 we see things like names and and countries as well as a few expressions. As me
+move up to a threshold we begin to see a few very common expressions like STATUS QUO and CARBON
+DIOXIDE. At a thousand we see expressions that must be common to the setting of this corpus. 
+
+#### 30 Highest PMI Values With Threshold of 100
+
+```
 Loading Objects
 building probabilities
 Building List
@@ -495,8 +529,20 @@ The 30 highest PMI pairs with threshold 100 are:
 [34377.06263178214, 'YAUNG', 'CHIH-LIANG']
 [32080.642735042737, 'SHIEH', 'JHY-WEY']
 [31659.92145542427, 'MAO', 'CHI-KUO']
+```
+Now we see more common words that have a high likelyhood of cooccourance. 
+
+
+#### New York has a Low PMI
+
+In my analysis New York and a fairly low PMI:
+
+```
 [535.1208797049056, 'NEW', 'YORK']
 ```
 
-
-New York has a low PMI because NEW is a very common word driving the numerator down and the denominator up in the PMI calculations.
+New York has a low PMI because NEW is a very common word.  In a corpus this large the token NEW 
+will occour many many times with tokens other than YORK following it. This means that the conditional 
+probability in the numerator is much much lower than in token pairs where the history token is not as 
+likely to stand alone such as BARACK OBAMA. YORK is also used in other context than in NEW YORK,
+so the unigram probability of YORK in the denominator will also drive down the PMI value.
