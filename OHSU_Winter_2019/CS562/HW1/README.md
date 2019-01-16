@@ -313,3 +313,72 @@ TAIWAN-BASED EVERGREEN MARINE CORP. WHICH OPERATES ONE OF THE LARGEST CONTAINER 
 #### Number of sentences in corpus: 588,701
 
 ## Part 3
+
+My implementation in this section can be a bit confusing. I am using several methods that may be
+unexpected. The most confusing part of this section may be the use of the `pickle` python object
+packing library to store objects. This is done for the purpose of speed in development and allows me
+to store and reload objects rather than computing them each time I change something. The saved 
+objects are defaultdicts holding corpus values.
+
+### Main Function
+
+The operation of this section all relies on functions that I have run out of time to describe. The functions
+can be examined by looking at the file `part_3.py`. I will include the main function parts that main 
+function so that you can see what functions to look for when examining the code files.
+
+The main function code is as follows:
+
+```python
+def main():
+
+    ### WORD COUNTING & DISTRIBUTION ###
+
+    # QUESTIONS 1 and 2
+    file_to_unigram_dict()
+    unigram_count_dict = load_object('unigram_count_dict.pkl')
+    unique_types = get_type_count(unigram_count_dict)
+    unique_tokens = get_token_count(unigram_count_dict)
+
+    print 'The number of unique types is ', str(unique_types)
+    print 'The number of unique tokens is ', str(unique_tokens)
+
+    # QUESTION 3
+    plot_rank_freq(unigram_count_dict)
+
+    # QUESTION 4
+    unigram_list = unigram_list_sorter(unigram_count_dict)
+    print "The 20 most common words are: "
+    for index in range(20): print unigram_list[index]
+
+    # QUESTIONS 5 & 6
+    unigram_list_no_stopwords = remove_stopwords_from_list(unigram_list)
+    print "The 20 most common words after stopword removal are: "
+    for index in range(20): print unigram_list_no_stopwords[index]
+
+    ### WORD ASSOCIATION METRICS ###
+    file_to_bigram_dict()
+
+    pmi_list_thresh_0 = get_pmi()
+    print "The 30 highest PMI pairs with threshold 0 are: "
+    for index in range(30): print pmi_list_thresh_0[index]
+
+
+    pmi_list_thresh_100 = get_pmi(threshold=100)
+    print "The 30 highest PMI pairs with threshold 100 are: "
+    for index in range(30): print pmi_list_thresh_100[index]
+
+    for pmi_itter in pmi_list_thresh_0:
+        if pmi_itter[1] == 'NEW' and pmi_itter[2] == 'YORK':
+            print pmi_itter
+```
+
+### Word Counting and Distribution
+
+#### 1. Unique  Types
+`The number of unique types is  143730`
+
+#### 2. Unique Tokens
+`The number of unique tokens is  17149316`
+
+#### 3. Rank Frequency Plot
+![alt text](rand_freq.png)
