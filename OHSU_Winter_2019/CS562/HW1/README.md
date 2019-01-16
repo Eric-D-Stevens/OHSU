@@ -75,7 +75,7 @@ as follows:
 
 `python part_1.py cna_eng/*.gz > deserialized.txt`
 
-### Sample Output
+### 2. Sample Output
 `head -n 100 deserialized.txt `
 
 ```
@@ -181,8 +181,135 @@ Taipei's representative office in Rome, which has generally been
 reluctant to beckon Taiwan investors to Italy for fear that the
 ```
 
+### 3. Summary
+
+I thought that the functionized downlad utility was an elegant solution. Giving the user of the code the
+ability to downlad the files from the program itself.
+
+The xml files themselves were not very structurally complex. This made it easy to parse them. If more
+complicated files needed parsing I would want to step up the complexity of the xml parser.
 
 ## Part 2 
 
+In this section the program takes an input of the form of the output file from Part 1 and outputs a file
+of tokens. This operation is done in two parts, the sentence tokenizer and the word tokenizer, both of
+which utilize the `nltk` library.
+
+#### Sentence Tokenizer
+
+The sentence tokenizer reads in the output of Part 1, replacing all newline characters with spaces.
+This results in a single, contiguous string. From there the `nltk.sent_tokenize` function is used to 
+split the string into sentences, one sentence per list element. Then each list element is written to a temp
+file that will be used by the word tokenizer. 
+
+The code for the sentence tokenizer is as follows:
+
+```python
+def nltk_sentence_tokenizer(input_file = "deserialized.txt",
+                            output_file = "nltk_tokenized_sentences.txt"):
+
+    ''' This function takes input of the form of the output of part 1 and
+    writes a new file where each sentence is contained in a single line as
+    parsed by nlte.sent_tokenizer'''
+
+    with open('temp.txt', 'w') as output_stream:
+        with open(input_file, 'r') as input_stream:
+            single_line = input_stream.readline()
+            while single_line:
+                output_stream.write(single_line[:-1]+' ')
+                single_line = input_stream.readline()
+
+    single_line_file_stream = open('temp.txt', 'r')
+    single_line_file = single_line_file_stream.read()
+    single_line_file_stream.close()
+    os.system('rm temp.txt')
+
+    tokenized_sentences = nltk.tokenize.sent_tokenize(single_line_file)
+    with open(output_file, 'w') as output_stream:
+        for token_sentence in tokenized_sentences:
+            output_stream.write(token_sentence+'\n')
+```
+
+#### Word Tokenizer
+
+The word token reads in, line by line,  the file that was output by the sentence tokenizer and breaks 
+appart the words in each sentence into tokens using the `nltk.word_tokenize` function. After it does 
+this it combs through the tokens and removes tokens that are punctuations in pythons punctuation list.
+After each line is operated on it is written to a file. The default output file name is `nltk_tokenized.txt`.
+
+The code for the word tokenizer is as follows:
+
+```python
+def nltk_word_tokenizer(input_file = "nltk_tokenized_sentences.txt",
+                        output_file = "nltk_tokenized.txt"):
+
+    '''This function takes the file output from the sentence tokenizer
+    and uses it to tokenize words as parsed by nltk.word_tokenizer.'''
+
+    with open(output_file, 'w') as output_stream:
+        with open(input_file, 'r') as input_stream:
+            single_line = input_stream.readline()
+            punct_set = set(string.punctuation)
+            while single_line:
+                tokienized_line = nltk.tokenize.word_tokenize(single_line)
+                output_stream.write(' '.join([tkn.upper() for tkn in tokienized_line
+                                              if tkn not in punct_set])+'\n')
+                single_line = input_stream.readline()
+```
+
+#### Main Function and Final Number of sentences:
+
+The main function runs these operations. 
+
+Here is the main code:
+
+```python
+def main():
+    if len(sys.argv)==1:
+        nltk_sentence_tokenizer()
+        nltk_word_tokenizer()
+
+    elif len(sys.argv)==3:
+        input_file_name = sys.argv[1]
+        output_file_name = sys.argv[2]
+        nltk_sentence_tokenizer(input_file=input_file_name)
+        nltk_word_tokenizer(output_file=output_file_name)
+
+    else:
+        print("ERROR: incorrect usage")
+        exit()
+
+    os.system('rm -f nltk_tokenized_sentences.txt')
+```
+
+
+Here is a sample of the output after running main:
+
+`head -n 20 nltk_tokenized.txt`
+
+```
+MAINLAND CHINESE FOREIGN MINISTER QIAN QICHEN WAS HIGHLY SKEPTICAL OF TOKYO 'S EXPLANATIONS OF THE CONTENT OF THE NEWLY PUBLISHED US-JAPAN GUIDELINES FOR DEFENSE COOPERATION WHEN HE MET MONDAY IN BEIJING WITH REPRESENTATIVES OF JAPAN 'S PRESS
+QIAN ALSO SAID THE TIME IS NOT RIPE YET FOR A TRILATERAL OFFICIAL DIALOGUE AMONG WASHINGTON BEIJING AND TOKYO ON DEFENSE ADDING THAT `` SCHOLARLY DISCUSSION '' WOULD BE APPROPRIATE AT THE PRESENT
+QIAN 'S REMARKS INDICATE THAT DESPITE EXPLANATIONS OF THE NEW GUIDELINES BY JAPANESE PRIME MINISTER RYUTARO HASHIMOTO AND FOREIGN MINISTER KEIZO OBUCHI BEIJING IS STILL VERY WORRIED ABOUT WHETHER TAIWAN FALLS WITHIN THE SPHERE OF THE BILATERAL DEFENSE AGREEMENT
+ACCORDING TO REPORTS IN THE JAPANESE MEDIA AMONG QIAN 'S CONCERNS ARE -- IF THE DEFENSE PACT IS A MATTER BETWEEN WASHINGTON AND TOKYO IT SHOULD BE UNNECESSARY TO RENEW IT HENCE PUTTING ITS CONTENT INTO DOUBT
+-- ALTHOUGH THE NEW GUIDELINES DO NOT SPECIFICALLY MENTION GEOGRAPHIC CRITERIA THERE IS STILL SPECULATION THAT THEY COVER TAIWAN
+-- SOME HAVE ARGUED FOR RAISING THE TRANSPARENCY OF THE BILATERAL AGREEMENT WHILE OTHERS ADVOCATE KEEPING IT AMBIGUOUS AND OPAQUE
+THE AMERICAN CHAMBER OF COMMERCE AMCHAM IN TAIPEI ON WEDNESDAY APPEALED FOR AN EARLY CONCLUSION OF TRADE CONSULTATIONS BETWEEN THE UNITED STATES AND THE REPUBLIC OF CHINA ON TERMS FOR TAIWAN TO JOIN THE WORLD TRADE ORGANIZATION WTO
+AMCHAM PRESIDENT JEFFREY R. WILLIAMS TOLD A NEWS CONFERENCE THAT ALL AMCHAM MEMBERS HOPE BILATERAL ROC-US WTO TALKS WILL BE CONCLUDED AS SOON AS POSSIBLE TO FACILITATE TAIWAN 'S ENTRY TO THE GENEVA-BASED WORLD TRADE REGULATORY BODY
+ACCORDING TO WILLIAMS MOST AMERICAN BUSINESS PEOPLE WITH INTERESTS IN TAIWAN ARE CONVINCED THAT THEY WILL BENEFIT FROM TAIWAN 'S WTO ACCESSION BECAUSE TAIWAN WOULD BE REQUIRED TO FURTHER OPEN ITS MARKET AND BETTER PROTECT INTELLECTUAL PROPERTY RIGHTS
+WILLIAMS WHO JUST RETURNED FROM A `` DOORKNOCKING '' VISIT TO WASHINGTON D.C. AT THE HEAD OF A 12-MEMBER AMCHAM DELEGATION SAID THE US EXECUTIVE BRANCH AGREED WITH AMCHAM THAT TAIWAN 'S WTO ACCESSION SHOULD NOT BE LINKED TO MAINLAND CHINA 'S MEMBERSHIP APPLICATION
+`` WE AGREE THAT TAIWAN 'S WTO ENTRY SHOULD BE CONSIDERED COMPLETELY ON THE BASIS OF ITS OWN ECONOMIC CONDITIONS '' WILLIAMS SAID ADDING THAT TAIWAN IS LIKELY TO CONCLUDE WTO-RELATED TRADE CONSULTATIONS WITH THE UNITED STATES BEFORE THE END OF BILATERAL WTO TALKS BETWEEN WASHINGTON AND BEIJING
+DURING ITS STAY IN THE UNITED STATES THE AMCHAM DELEGATION MET WITH MANY CLINTON ADMINISTRATION OFFICIALS AND CONGRESS MEMBERS TO EXCHANGE VIEWS ON WAYS TO HELP AMERICAN CORPORATIONS UPGRADE THEIR OVERSEAS COMPETITIVENESS
+WILLIAMS SAID THE AMCHAM MISSION HAD URGED VARIOUS US FEDERAL AGENCIES TO ALLOW THEIR SENIOR OFFICIALS TO MAKE FREQUENT VISITS TO TAIWAN TO HELP BOOST BILATERAL TRADE AND ECONOMIC COOPERATION FOR MUTUAL BENEFITS
+EVEN THOUGH THE CLINTON ADMINISTRATION WAS BUSY PREPARING FOR MAINLAND CHINESE PRESIDENT JIANG ZEMIN 'S PLANNED VISIT TO THE UNITED STATES LATE THIS MONTH WILLIAMS SAID MANY FEDERAL GOVERNMENT OFFICIALS STILL SHOWED KEEN INTEREST IN LISTENING TO AMCHAM 'S SUGGESTIONS AND OPINIONS ABOUT REINFORCING TAIPEI-WASHINGTON TRADE AND ECONOMIC TIES
+AS TO THE AMCHAM 1997-98 TAIWAN WHITE PAPER WHICH HE FORMALLY UNVEILED AT A NEWS CONFERENCE HELD IN WASHINGTON D.C. LAST THURSDAY WILLIAMS SAID THE ANNUAL REPORT MAINLY ANALYZED TAIWAN 'S CURRENT ECONOMIC AND INVESTMENT CLIMATE AS A REFERENCE FOR AMERICAN COMPANIES INTENDING TO INVEST IN TAIWAN ADDING THAT THE WHITE PAPER WAS NOT AIMED AT CRITICIZING ANY PARTY
+THE WHITE PAPER SAID TAIWAN 'S RESTRICTIONS ON TRADE AND INVESTMENT ACROSS THE TAIWAN STRAIT HAVE NOT ONLY HINDERED THE DEVELOPMENT OF ITS OWN INDUSTRIES BUT HAVE ALSO DISCOURAGED MULTINATIONAL BUSINESS GROUPS FROM SETTING UP A FOOTHOLD ON THE ISLAND
+IT FURTHER CLAIMED THAT THE ROC GOVERNMENT 'S MASTER PLAN TO DEVELOP TAIWAN INTO AN ASIA-PACIFIC OPERATIONS CENTER WOULD REMAIN A PIPE DREAM IF TAIWAN COMPANIES ARE NOT ALLOWED TO ENTER THE VAST MAINLAND MARKET DIRECTLY AND OBTAIN ACCESS TO ITS RESOURCES
+WILLIAMS SAID AMCHAM 'S ANALYSIS WAS MADE PURELY FROM A COMMERCIAL VIEWPOINT ADDING THAT AMCHAM MEMBERS BELIEVE TAIWAN MUST ESTABLISH DIRECT COMMUNICATIONS AND TRANSPORT LINKS WITH MAINLAND CHINA SO THAT TAIWAN-BASED COMPANIES CAN MAKE SUCCESSFUL INROADS INTO THE WORLD 'S LARGEST MARKET
+EVERGREEN 'S GREEN-COLORED SHIPS AND GREEN MATCHBOX-LIKE CONTAINERS ARE THE HOPE OF THE PORT OF GIOIA TAURO IN SOUTHERN ITALY
+TAIWAN-BASED EVERGREEN MARINE CORP. WHICH OPERATES ONE OF THE LARGEST CONTAINER FLEETS IN THE WORLD IS WAGERING ON GIOIA TAURO A NEWLY-DEVELOPED AND NON-URBAN PORT AREA ATTEMPTING TO BUILD IT INTO THE THIRD LARGEST CONTAINER PORT IN THE WORLD
+```
+
+#### Number of sentences in corpus: 588,701
 
 ## Part 3
