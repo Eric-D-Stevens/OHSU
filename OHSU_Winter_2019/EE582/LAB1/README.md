@@ -4,8 +4,7 @@
 
 In this lab we analyze the sound
 
-'''python
-
+```python
 def convolve(input1, input2):
 
     ''' Perfroms convolution operation on two input np.array
@@ -38,9 +37,4 @@ def convolve(input1, input2):
 
     # output is np.array object
     return output
-
-
-
-
-
-'''
+```
