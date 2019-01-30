@@ -60,6 +60,20 @@ arrays by the maximum value in either of them. After this is
 acomplished the file is written to a file path specified in
 parameter list. 
 
+
+```python
+def move_signal(input_signal_file='wav_files/sentence.wav',
+                output_signal_file='output_sentence1.wav',
+                left_impulse_response='wav_files/L1.wav',
+                right_impulse_reponse='wav_files/R1.wav'):
+
+    ''' This function will move the senteance file around the room.
+    The inputs to the the function are file names. The input_signal_file
+    is the sentence that should be moved around the room. The left and
+    right impulse responses are the provided response files and the output
+    file is the desired name of the file produced by the function.'''
+```
+
 Next a function will be created to perform the above operation 
 with every pair of provided impulse responses. This function
 will also output a single audio file of all 5 outputs 
