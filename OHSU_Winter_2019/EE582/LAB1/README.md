@@ -108,3 +108,17 @@ def all_files(order_list=[1, 2, 3, 4, 5]):
     written to. The input signal file must be file
     'wav_files/sentence1.wav'. addition: a file of '''
 ```
+
+From listening to the output files of this function we can 
+match each file to its corresponding output location.
+
+| **Pair** | **Location** |
+|----------|--------------|
+| 1        | xxx          |
+| 2        | xxx          |
+| 3        | xxx          |
+| 4        | xxx          |
+| 5        | xxx          |
+
+
+## Part 3
