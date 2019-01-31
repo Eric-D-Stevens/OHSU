@@ -84,4 +84,27 @@ This function `all_files()` has an input parameter `order_list`
 that is a regular python list with the values in the list being
 the order in which the user desires to process the impulse 
 responses. If no value is provided, the function will output the
-files 1-5 in numerical order. 
+files 1-5 in numerical order. In other words, if we run the 
+command `all_files([2,5,4,1,3])` we will get 6 output .wav files.
+There will be .wav files for each of the response pairs, and a
+.wav file that is the concatenation of these files in the 
+order: 2, 5, 4, 1, 3. This concatenated file allows us to do
+a final check to make sure the sound is sweeping around the
+space and ensures we have the correct angles. All of these
+files will end up in a subdirectory called `./output_wav_files/`.
+
+```python
+def all_files(order_list=[1, 2, 3, 4, 5]):
+
+    ''' runs the 'move_signal' functions on all
+    input files and creates an ouptut file for each one.
+    Also creates a single concatenated file of all input
+    files in the order of the values in the parameter 'order_list'
+    assumes that all input wave files are in a folder called
+    'wav_files/' and that the left input response files are
+    titled L1.wave, L2.wav, ... and the right are R1.wav
+    R2.wave ... It also assumes there is an output directory
+    called 'output_wav_files/' where the files will be
+    written to. The input signal file must be file
+    'wav_files/sentence1.wav'. addition: a file of '''
+```
