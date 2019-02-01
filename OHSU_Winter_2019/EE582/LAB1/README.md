@@ -18,7 +18,7 @@
 Running the main program with `python lab1.py` will produce a 
 demonstration of the function of all the sections in the lab.
 Solutions to particular sections are implement in one or more
-seperate functions that can be viewed in the `lab1.py` file.
+separate functions that can be viewed in the `lab1.py` file.
 
 
 ## Part 1
@@ -37,7 +37,7 @@ placing zero arrays of size `len(h_t) - 1` on either end of it.
 This array, named `x_reverse`, will be used to calculate the sum.
 The convolution operation is done by sliding `h_t` across the 
 `x_reversed` array and performing a matrix multiplication at each
-step. The value of each matrix mulitplication is set to the 
+step. The value of each matrix multiplication is set to the 
 appropriate value in the output array. 
 
 ```python
@@ -77,7 +77,7 @@ def convolve(input1, input2):
 
 ## Part 2
 
-In this section the convolution function is used to convolve the
+In this section the convolution function is used to convolve
 the provided sound file with the provided impulse responses. This
 allows the user to move the signal around the room. Since we know
 that there are 5 signals and we know that they are coming from 5
@@ -85,22 +85,22 @@ provided directions we can perform these convolution operations
 and then output the resulting sound file and listen to determine 
 from which of the predetermined direction each file is coming from.
 
-The first step in accomplishing this is to get the abbility to 
+The first step in accomplishing this is to get the ability to 
 move the signal around the room based on the provided files. The
-function `move_signal()` acomplishes this task. The inputs to the
+function `move_signal()` accomplishes this task. The inputs to the
 function are the input signal file path, the file paths for each
 of the impulse response files, and the name of the desired output
 file path. 
 
 The function first loads the input files and ensures that the two
-resulting impuse response arrays are the same lenght. Then each
+resulting impulse response arrays are the same length. Then each
 impulse response is convolved with the input signal array to 
 create the new output channel arrays `left_output` and 
 `right_output`. These arrays will use the `float32` data format 
 to allow the writing of the wav file and therefore need to be
 normalized to a range of [-1,1]. This is done by dividing both
 arrays by the maximum value in either of them. After this is
-acomplished the file is written to a file path specified in
+accomplished the file is written to a file path specified in
 parameter list. 
 
 
@@ -157,8 +157,8 @@ def move_signal(input_signal_file='wav_files/sentence.wav',
 Next a function will be created to perform the above operation 
 with every pair of provided impulse responses. This function
 will also output a single audio file of all 5 outputs 
-concatenated together to in order to test our ideas about the 
-the direction the signal is coming from. 
+concatenated together to in order to test our ideas about the
+direction the signal is coming from. 
 
 This function `all_files()` has an input parameter `order_list`
 that is a regular python list with the values in the list being
@@ -239,16 +239,16 @@ called `x_reverse` in the convolution function is now called
 
 Unlike the convolution function, the correlation function
 returns two values. The first, `output`, is the np array
-that resulted from the corrlation operation. the second,
+that resulted from the correlation operation. The second,
 `index` is the index at which the correlation value was
 maximum. 
 
-It is important to note that the indecies of the array do
-not properly correspond with the indecies of a properly 
+It is important to note that the indices of the array do
+not properly correspond with the indices of a properly 
 performed correlation function. This is because correlation,
-even with causal signals, will have valuse at negative 
-indecies. The requirements of this assignment do not 
-necessarily need to keep track of these indecies.
+even with causal signals, will have values at negative 
+indices. The requirements of this assignment do not 
+necessarily need to keep track of these indices.
 
 ```python
 def correlate(input1, input2):
@@ -363,8 +363,8 @@ a + b   [ 0.  0.  0.  0.  0.  0.  0. 16.  0.  0.  0.  0.  0.  0.  0.]
 ```
 
 As can be seen above, all of the auto-correlation sums have
-only 0 coefficents at every point other than the origin. 
-At the origin there is an coefficent value of 2(2^n).
+only 0 coefficients at every point other than the origin. 
+At the origin there is an coefficient value of 2(2^n).
 
 The reason that Golay sequences are useful is that the fact 
 that the autocorrelations sum to what is essentially an impulse
@@ -378,13 +378,13 @@ distributed.
 
 In this section an effort is made to determine which of the 
 provided impulse responses matches a mystery version impulse
-response. The mystery response is one of the origional files
+response. The mystery response is one of the original files
 with white noise layered on top of it.  
 
 One method to determine which impulse response was the 
-base for the mystery file is to run the correlatioin 
+base for the mystery file is to run the correlation 
 operation on the mystery file against all the original
-impulse response files and then find the the maximum
+impulse response files and then find the maximum
 value of all of them. This is done with the function
 `mystery_correlations()`, which will return a list
 of tuples containing a label and a maximum value from
