@@ -1,10 +1,27 @@
-# DSP: Lab 1
+# EE 580: Lab 1
 ### Eric D. Stevens
 ### January 31, 2019
 
-In this lab we analyze the sound
+## Overview
 
-## Part 1:
+#### Python Version
+
+* Python 2.7
+
+#### Required Libraries
+* NumPy
+* SciPy
+* MatPlotLib
+
+#### Usage
+
+Running the main program with `python lab1.py` will produce a 
+demonstration of the function of all the sections in the lab.
+Solutions to particular sections are implement in one or more
+seperate functions that can be viewed in the `lab1.py` file.
+
+
+## Part 1
 
 In this section a function to perform convolution is build from
 scratch using the numpy library. The inputs, `input1` and 
@@ -30,9 +47,35 @@ def convolve(input1, input2):
     objects. Sets the smaller of the two inputs to 'h_t' and
     the longer of the two to x_t. Returns an np.array that is
     the convolution sum of the two signals. '''
+
+    # set x_t to the longer signal and h_t to the shorter
+    if len(input1) == len(input2):
+        x_t = input1
+        h_t = input2
+    else:
+        x_t = max(input1, input2, key=len)
+        h_t = min(input1, input2, key=len)
+
+    x_length = len(x_t)
+    h_length = len(h_t)
+
+    # empty output array to be filled
+    output = np.zeros(x_length + h_length - 1)
+
+    # reverse x_t and pad with zeros to prep for convolution
+    x_reverse = np.concatenate((np.zeros(h_length),
+                                np.flip(x_t),
+                                np.zeros(h_length)))
+
+    # convolution operation. loop shifts through
+    for i in range(x_length+h_length-1):
+        output[i] = np.matmul(h_t, x_reverse[-h_length-i-1:-i-1])
+
+    # output is np.array object
+    return output
 ```
 
-## Part 2:
+## Part 2
 
 In this section the convolution function is used to convolve the
 the provided sound file with the provided impulse responses. This
@@ -72,6 +115,43 @@ def move_signal(input_signal_file='wav_files/sentence.wav',
     is the sentence that should be moved around the room. The left and
     right impulse responses are the provided response files and the output
     file is the desired name of the file produced by the function.'''
+
+    # load signal file and left and right impluse responses
+    x_t = load_wav(input_signal_file)
+    h_l_t = load_wav(left_impulse_response)
+    h_r_t = load_wav(right_impulse_reponse)
+
+    # impulse response must be same lenght for multichannel output
+    assert len(h_l_t) == len(h_r_t)
+
+    # convolve input signal with both impulse response
+    left_output = convolve(x_t, h_l_t)
+    right_output = convolve(x_t, h_r_t)
+
+    ''' The convolution function results in very large number in the
+    output. These outputs will not work as inputs to the wave file
+    writing function. In order to comply with the scipy wave writeing
+    function we convert all values to numpy data type float32 with a
+    normalized range of [-1.0, 1.0]. '''
+
+    # find the max value in either of the channel outputs
+    max_l = max(np.abs(left_output))
+    max_r = max(np.abs(right_output))
+    maximum = max(max_l, max_r)
+
+    # normalize the channels to a range [-1, 1]
+    left_output /= maximum
+    right_output /= maximum
+
+    # convert to proper datatype for wave write
+    left_output = left_output.astype('float32')
+    right_output = right_output.astype('float32')
+    output = np.array([left_output, right_output])
+
+    # write file
+    wavfile.write(output_signal_file, 44100, output.T)
+
+    return output
 ```
 
 Next a function will be created to perform the above operation 
@@ -107,18 +187,281 @@ def all_files(order_list=[1, 2, 3, 4, 5]):
     called 'output_wav_files/' where the files will be
     written to. The input signal file must be file
     'wav_files/sentence1.wav'. addition: a file of '''
+
+    # one long audio file in the order of parameter list
+    all_files_output = np.empty([2, 0])
+
+    # ensure output directory exits
+    if not os.path.exists('./output_wav_files/'):
+        os.makedirs('./output_wav_files/')
+
+    # loop through each file
+    for number in order_list:
+        lir = 'wav_files/L'+str(number)+'.wav'
+        rir = 'wav_files/R'+str(number)+'.wav'
+        output_file = 'output_wav_files/output_sentence'+str(number)+'.wav'
+
+        # write for current file
+        file_out = move_signal(output_signal_file=output_file,
+                               left_impulse_response=lir,
+                               right_impulse_reponse=rir)
+
+        # concat current file to long file
+        all_files_output = np.append(all_files_output, file_out, axis=1)
+
+    # write long file
+    long_file_name = 'output_wav_files/file_concat.wav'
+    wavfile.write(long_file_name, 44100, all_files_output.T)
 ```
 
 From listening to the output files of this function we can 
 match each file to its corresponding output location.
 
+
 | **Pair** | **Location** |
 |----------|--------------|
-| 1        | xxx          |
-| 2        | xxx          |
-| 3        | xxx          |
-| 4        | xxx          |
-| 5        | xxx          |
+| 1        | +80&deg;     |
+| 2        | 0&deg;       |
+| 3        | -40&deg;     |
+| 4        | -80&deg;     |
+| 5        | +40&deg;     |
 
 
 ## Part 3
+
+In this section, the convolution function built in part one
+will be altered slightly to create a correlation function.
+This simply involves not reversing the `x_t` variable before
+performing the sliding and summing operation. To notice the
+difference, look at the code below and see that what was 
+called `x_reverse` in the convolution function is now called
+`x_padded` and does not have the reverse function involved.
+
+Unlike the convolution function, the correlation function
+returns two values. The first, `output`, is the np array
+that resulted from the corrlation operation. the second,
+`index` is the index at which the correlation value was
+maximum. 
+
+It is important to note that the indecies of the array do
+not properly correspond with the indecies of a properly 
+performed correlation function. This is because correlation,
+even with causal signals, will have valuse at negative 
+indecies. The requirements of this assignment do not 
+necessarily need to keep track of these indecies.
+
+```python
+def correlate(input1, input2):
+
+    ''' Correlation function does the exact same thing as the
+    convolution function except that it does not flip the input
+    signal. Also the return values include the output array as
+    well as the shift index that resulted in the maximum score.'''
+
+    # set x_t to the longer signal and h_t to the shorter
+    if len(input1) == len(input2):
+        x_t = input1
+        h_t = input2
+    else:
+        x_t = max(input1, input2, key=len)
+        h_t = min(input1, input2, key=len)
+
+    x_length = len(x_t)
+    h_length = len(h_t)
+
+    # empty output array to be filled
+    output = np.zeros(x_length + h_length - 1)
+
+    # pad x_t to prep for correlation sum
+    x_padded = np.concatenate((np.zeros(h_length),
+                               x_t,
+                               np.zeros(h_length)))
+
+    # correlation sum
+    for i in range(x_length+h_length-1):
+        output[i] = np.matmul(h_t, x_padded[-h_length-i-1:-i-1])
+
+    # get max correlation index
+    max_correlation = 0.0
+    index = 0
+    for ind in range(len(output)):
+        if output[ind] > max_correlation:
+            max_correlation = output[ind]
+            index = ind
+    index = index - x_length + 1 # this is wrong, is -len on auto
+
+    # output is np.array and index is the shift of highest allignment
+    return output, index
+```
+
+## Part 4
+
+The purpose of this section is to show that the auto-correlation
+of Golay sequence pairs sum to zero and to explain how this fact
+can be useful in the effort to reduce noise in signals.
+
+To demonstrate the auto-correlation sum property of Golay sequence
+pairs, a Golay sequence generator is built.
+
+```python
+def create_golay(n_order=1):
+    ''' returns Golay sequence pair, each of size 2^n_order '''
+
+    # inital golay sequence pair, order 1
+    golay_pos = np.array([1, 1]) 
+    golay_neg = np.array([1, -1])
+
+    if n_order == 1:
+        return (golay_pos, golay_neg)
+
+    # itterative implementation of recursive generation
+    for i in range(1,n_order):
+        agolay = np.append(golay_pos, golay_neg)
+        bgolay = np.append(golay_pos, -1*golay_neg)
+        golay_pos = agolay
+        golay_neg = bgolay
+
+    return golay_pos, golay_neg
+```
+
+Now we can use this function and the `correlate()` function to 
+demonstrate the property as follows:
+
+```python
+>>> for i in range(1,4):
+...     a,b = lab1.create_golay(i)
+...     a_auto,_ = lab1.correlate(a,a)
+...     b_auto,_ = lab1.correlate(b,b)
+...     print '\n'
+...     print 'a      ', a
+...     print 'b      ', b
+...     print 'a auto ', a_auto
+...     print 'b auto ', b_auto
+...     print 'a + b  ', a_auto+b_auto
+... 
+
+
+a       [1 1]
+b       [ 1 -1]
+a auto  [1. 2. 1.]
+b auto  [-1.  2. -1.]
+a + b   [0. 4. 0.]
+
+
+a       [ 1  1  1 -1]
+b       [ 1  1 -1  1]
+a auto  [-1.  0.  1.  4.  1.  0. -1.]
+b auto  [ 1.  0. -1.  4. -1.  0.  1.]
+a + b   [0. 0. 0. 8. 0. 0. 0.]
+
+
+a       [ 1  1  1 -1  1  1 -1  1]
+b       [ 1  1  1 -1 -1 -1  1 -1]
+a auto  [ 1.  0.  1.  0.  3.  0. -1.  8. -1.  0.  3.  0.  1.  0.  1.]
+b auto  [-1.  0. -1.  0. -3.  0.  1.  8.  1.  0. -3.  0. -1.  0. -1.]
+a + b   [ 0.  0.  0.  0.  0.  0.  0. 16.  0.  0.  0.  0.  0.  0.  0.]
+```
+
+As can be seen above, all of the auto-correlation sums have
+only 0 coefficents at every point other than the origin. 
+At the origin there is an coefficent value of 2(2^n).
+
+The reason that Golay sequences are useful is that the fact 
+that the autocorrelations sum to what is essentially an impulse
+allows for a similar signal coming through a convolution 
+operation, however, the negative and positive components
+on either side of the zero mark prevent the amplification
+of noise by canceling out the frequencies that are evenly
+distributed.
+
+## Part 5
+
+In this section an effort is made to determine which of the 
+provided impulse responses matches a mystery version impulse
+response. The mystery response is one of the origional files
+with white noise layered on top of it.  
+
+One method to determine which impulse response was the 
+base for the mystery file is to run the correlatioin 
+operation on the mystery file against all the original
+impulse response files and then find the the maximum
+value of all of them. This is done with the function
+`mystery_correlations()`, which will return a list
+of tuples containing a label and a maximum value from
+that labels correlation with the mystery file. 
+
+```python
+def mystery_correlations(make_plot=False):
+
+    ''' This function runs the corrlation function
+    on the mystery file agains all impulse response
+    files. if the 'make_plot' variable is set to
+    True then a plot of the correlations will be
+    made. The return value is a list of tuples that
+    contain the maximum value of corrlation result
+    and a label the value that it corresponds to'''
+
+    # holds max, label pair
+    cor_list = []
+
+    # load and normalize
+    myst = load_wav('wav_files/new_mystery.wav')
+    myst = myst/max(abs(myst))
+
+    # loop through all impulse response files
+    for i in range(1,6):
+
+        # correlation for left right impulse responses, normalized
+        impulse_l = load_wav('wav_files/L'+str(i)+'.wav')
+        impulse_r = load_wav('wav_files/R'+str(i)+'.wav')
+        impulse_l = impulse_l/max(abs(impulse_l))
+        impulse_r = impulse_r/max(abs(impulse_r))
+        cor_l, _ = correlate(myst, impulse_l)
+        cor_r, _ = correlate(myst, impulse_r)
+
+        # create plot
+        if make_plot:
+            plt.plot(cor_l, label='Left '+str(i))
+            plt.plot(cor_r, label='Right '+str(i))
+
+        # create and append max, label pair
+        cor_list.append((np.amax(cor_l), 'Left '+str(i)))
+        cor_list.append((np.amax(cor_r), 'Right '+str(i)))
+
+    # plot
+    if make_plot:
+        plt.legend()
+        plt.show()
+
+    return cor_list
+```
+
+The function above can be used to get the solution as follows:
+
+```python
+>>> correlation_list = lab1.mystery_correlations()
+>>> 
+>>> for item in correlation_list: print item
+... 
+(73.0, 'Left 1')
+(73.0, 'Right 1')
+(76.0, 'Left 2')
+(70.0, 'Right 2')
+(78.0, 'Left 3')
+(71.0, 'Right 3')
+(79.0, 'Left 4')
+(76.0, 'Right 4')
+(70.0, 'Left 5')
+(70.0, 'Right 5')
+>>> 
+>>> max(correlation_list)
+(79.0, 'Left 4')
+>>> 
+
+```
+
+The output above implies that the the signal in the mystery
+response is the Left 4 impulse response with noise on top
+of it. 
+
+
