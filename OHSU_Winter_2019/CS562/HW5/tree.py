@@ -147,6 +147,56 @@ class Tree(object):
                     yield Tree.from_string(string[start:end])
                     start = end
 
+    @classmethod
+    def from_stream_modified(cls, handle):
+
+        # initalize an empty stack
+        stack = [(None, [])]
+
+        # loop through readline operations
+        while(1):
+
+            # string will be a single line form the .psd formatted file
+            string = handle.readline()
+            if string == '':
+                print('reached end of file')
+                break # exit if end of file is reached
+
+            # for token matches in each new line
+            for m in finditer(TOKEN, string):
+                token = m.group()
+                if m.group(1):  # left delimiter
+                    stack.append((m.group(2), []))
+                elif m.group(3):  # right delimiter
+                    # if stack is "empty", there is nothing in need of closure
+                    if len(stack) == 1:
+                        raise ValueError('Need /{}/'.format(LDELE))
+                    (mother, children) = stack.pop()
+                    stack[-1][1].append(cls(mother, children))
+                elif m.group(4):  # leaf
+                    stack[-1][1].append(m.group(4))
+                else:
+                    raise ValueError('Parsing failure: {}'.format(m.groups()))
+
+            # if a matching closing deliminator has not been found, continue
+            # reading lines until one is found.
+            if len(stack) > 1:
+                continue
+
+            elif len(stack[0][1]) == 0:
+                raise ValueError('End-of-string, need /{}/'.format(LDELE))
+            elif len(stack[0][1]) > 1:
+                raise ValueError('String contains {} trees'.format(
+                    len(stack[0][1])))
+
+            # since a closing deliminator has been found, yeild the stack and
+            # then clear it for the next round of line reads. 
+            yield stack[0][1][0]
+            stack = [(None, [])]
+
+
+
+
     # magic methods for access, etc., all using self.daughters
 
     def __iter__(self):

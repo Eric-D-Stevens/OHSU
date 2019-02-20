@@ -11,6 +11,7 @@ from tree import Tree
 import tree
 from importlib import reload
 from random import randint
+import re
 ```
 
 
@@ -988,7 +989,266 @@ with open('wsj-normalized.psd') as stream:
 
 This was the simplest part of the assignment. Again this was a depth first recursive solution where at each step down the branch, the node labels are added to the production chain. By implementing the chain as a list we can simply append single new production additions or entire list of productions. The ability to append an entire production list to another is what makes the recursive solution work. By returning a production list from a lower node and appending it onto a higher nodes production list, we can recursively build a list for the entire tree.
 
-## Extra Credit
+## Extra Credit `from_stream_modified()`
+
+### EC.1 Program
+
+
+```python
+''' This code should not be run in the notebook. The code
+here is just a compiled version of my work, seperated form 
+the rest of the code for easy viewing. See how the code is
+utilized in the following section.'''
+
+@classmethod
+def from_stream_modified(cls, handle):
+
+    # initalize an empty stack
+    stack = [(None, [])]
+
+    # loop through readline operations
+    while(1):
+
+        # string will be a single line form the .psd formatted file
+        string = handle.readline()
+        if string == '':
+            print('reached end of file')
+            break # exit if end of file is reached
+
+        # for token matches in each new line
+        for m in finditer(TOKEN, string):
+            token = m.group()
+            if m.group(1):  # left delimiter
+                stack.append((m.group(2), []))
+            elif m.group(3):  # right delimiter
+                # if stack is "empty", there is nothing in need of closure
+                if len(stack) == 1:
+                    raise ValueError('Need /{}/'.format(LDELE))
+                (mother, children) = stack.pop()
+                stack[-1][1].append(cls(mother, children))
+            elif m.group(4):  # leaf
+                stack[-1][1].append(m.group(4))
+            else:
+                raise ValueError('Parsing failure: {}'.format(m.groups()))
+
+        # if a matching closing deliminator has not been found, continue
+        # reading lines until one is found.
+        if len(stack) > 1:
+            continue
+
+        elif len(stack[0][1]) == 0:
+            raise ValueError('End-of-string, need /{}/'.format(LDELE))
+        elif len(stack[0][1]) > 1:
+            raise ValueError('String contains {} trees'.format(
+                len(stack[0][1])))
+
+        # since a closing deliminator has been found, yeild the stack and
+        # then clear it for the next round of line reads. 
+        yield stack[0][1][0]
+
+
+```
+
+### EC.2 Sample Outputs
+
+
+```python
+'''This simple script will randomly select an entry from the 
+    wsj-normalized.psd corpus three times and output the results 
+    of running the intended script on the entry'''
+
+with open('wsj-normalized.psd') as stream:
+    ###### CALL TO MODIFIED 'FROM STREAM' METHOD ######
+    wsj = Tree.from_stream_modified(stream)
+    for i in range(3):
+        for _ in range(randint(1,1000)):
+            sample = next(wsj)
+        
+        stars = '*'*20
+        print('%s Outputs %d: %s \n\nInitial Read: %s' % (stars, (i+1), stars, stars))
+        print(sample)
+```
+
+    ******************** Outputs 1: ******************** 
+    
+    Initial Read: ********************
+    (TOP
+        (S
+            (NP-SBJ
+                (DT the)
+                (NN movie)
+            )
+            (VP
+                (VBZ ends)
+                (PP-MNR
+                    (IN with)
+                    (NP
+                        (NP
+                            (NN sound)
+                        )
+                        (, ,)
+                        (NP
+                            (NP
+                                (DT the)
+                                (NN sound)
+                            )
+                            (PP
+                                (IN of)
+                                (S-NOM
+                                    (NP-SBJ
+                                        (NN street)
+                                        (NNS people)
+                                    )
+                                    (VP
+                                        (VBG talking)
+                                    )
+                                )
+                            )
+                        )
+                        (, ,)
+                    )
+                )
+            )
+        )
+        (CC and)
+        (S
+            (NP-SBJ
+                (EX there)
+            )
+            (VP
+                (VBZ is)
+                (RB n't)
+                (NP-PRD
+                    (NP
+                        (NN anything)
+                    )
+                    (ADJP
+                        (JJ whimsical)
+                        (CC or)
+                        (JJ enviable)
+                    )
+                )
+                (PP-LOC
+                    (IN in)
+                    (NP
+                        (DT those)
+                        (JJ rough)
+                        (, ,)
+                        (JJ beaten)
+                        (NNS voices)
+                    )
+                )
+            )
+        )
+        (. .)
+    )
+    ******************** Outputs 2: ******************** 
+    
+    Initial Read: ********************
+    (TOP
+        (NP-SBJ
+            (NP
+                (NNP <NNP>)
+                (POS 's)
+            )
+            (VBG leading)
+            (NN program)
+            (NNS traders)
+        )
+        (VP
+            (VBP are)
+            (NP-PRD
+                (DT the)
+                (JJ big)
+                (NNP <NNP>)
+                (NNS securities)
+                (NNS houses)
+            )
+            (, ,)
+            (SBAR-ADV
+                (IN though)
+                (S
+                    (NP-SBJ
+                        (DT the)
+                        (NNP <NNP>)
+                    )
+                    (VP
+                        (VBP are)
+                        (VP
+                            (VBG playing)
+                            (NP
+                                (NN catch-up)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (. .)
+    )
+    ******************** Outputs 3: ******************** 
+    
+    Initial Read: ********************
+    (TOP
+        (CC and)
+        (NP-SBJ
+            (NP
+                (PRP$ our)
+                (NN action)
+            )
+            (NP-TMP
+                (NN today)
+            )
+        )
+        (VP
+            (MD will)
+            (VP
+                (VB allow)
+                (S
+                    (NP-SBJ
+                        (NNP <NNP>)
+                        (NNP <NNP>)
+                    )
+                    (VP
+                        (TO to)
+                        (VP
+                            (VB avoid)
+                            (NP
+                                (JJ prolonged)
+                                (, ,)
+                                (JJ distracting)
+                                (JJ legal)
+                                (NNS proceedings)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (. .)
+        ('' '')
+    )
+
+
+### EC.3 Summary
+
+To enable the the `from stream` method to be used witht he `from_string` style stack data structure while still allowing it to `yield` from a generator object, a few modifications had to be made to the `from string` code. The stack is initialized as usual, but now, right after the stack initialization, a `while(1)` loop is entered to allow for the continual reading from the file. Each iteration of this loop calls `stream.readline()`, giving us a single head, terminal node, or right delimiter. The string resulting from the readline then cascades down through the same stack location assignment as in the `from_string()`. This time however, where before there was a check if a right delimiter was missing and an exception raised if it was, this time we continue to read another line instead. This allows the file to be processed line by line. Once there is a matching closing delimiter, the stack is yeilded in the same way it was in `from_string()` and then the stack is cleared to prepare for a `next()` call.
+
+This method works well but a few concessions had to be made. First of all, the file has to be in the new line seperated fromat that our `.psd` file is in. Second, the call to `continue` in an iteration where a closing delimiter was not found, and its replacing of where there used to be an exception raised, puts us in some danger. This file runs the risk of being fed data files that were not properly formatted and behaving strangly without an exception being raised. What this would look like would be an input file that has a removed closing delimiter, resulting in the entire file after that mising delimiter being read in as a single tree.
+
+------------------------------------------
+------------------------------------------
+------------------------------------------
+------------------------------------------
+------------------------------------------
+------------------------------------------
+------------------------------------------
+
+
+
+
+
+
 
 ## Scratch Paper
 
@@ -1408,5 +1668,216 @@ type(cnf[0][0][0][0])
 
 
     str
+
+
+
+
+```python
+tree.DELIMITERS
+
+```
+
+
+
+
+    '(\\()|(\\))'
+
+
+
+
+```python
+ec = '''(TOP (S (S (VP (VBN Turned) (ADVP (RB loose)) (PP 
+        (IN in) (NP (NP (NNP Shane) (NNP Longman) (POS 's)) 
+        (NN trading) (NN room))))) (, ,) (NP (DT the) 
+        (NN yuppie) (NNS dealers)) (VP (AUX do) (NP (NP 
+        (RB little)) (ADJP (RB right)))) (. .)))'''
+```
+
+
+```python
+print(ec)
+```
+
+    (TOP (S (S (VP (VBN Turned) (ADVP (RB loose)) (PP 
+            (IN in) (NP (NP (NNP Shane) (NNP Longman) (POS 's)) 
+            (NN trading) (NN room))))) (, ,) (NP (DT the) 
+            (NN yuppie) (NNS dealers)) (VP (AUX do) (NP (NP 
+            (RB little)) (ADJP (RB right)))) (. .)))
+
+
+
+```python
+for m in re.finditer(tree.TOKEN, ec):
+    print(m.group(1))
+```
+
+    (
+    (
+    (
+    (
+    (
+    None
+    None
+    (
+    (
+    None
+    None
+    None
+    (
+    (
+    None
+    None
+    (
+    (
+    (
+    None
+    None
+    (
+    None
+    None
+    (
+    None
+    None
+    None
+    (
+    None
+    None
+    (
+    None
+    None
+    None
+    None
+    None
+    None
+    (
+    None
+    None
+    (
+    (
+    None
+    None
+    (
+    None
+    None
+    (
+    None
+    None
+    None
+    (
+    (
+    None
+    None
+    (
+    (
+    (
+    None
+    None
+    None
+    (
+    (
+    None
+    None
+    None
+    None
+    None
+    (
+    None
+    None
+    None
+    None
+
+
+
+```python
+from tree import Tree
+stream = open('wsj-normalized.psd')
+mmm = Tree.from_stream_modified(stream)
+```
+
+
+```python
+next(mmm)
+```
+
+
+
+
+    (TOP
+        (NP-SBJ
+            (EX there)
+        )
+        (VP
+            (VBZ is)
+            (NP-PRD
+                (DT no)
+                (NN asbestos)
+            )
+            (PP-LOC
+                (IN in)
+                (NP
+                    (PRP$ our)
+                    (NNS products)
+                )
+            )
+            (ADVP-TMP
+                (RB now)
+            )
+        )
+        (. .)
+        ('' '')
+    )
+
+
+
+
+```python
+Tree.from_string(ec)
+```
+
+
+
+
+    (TOP
+        (S
+            (S
+                (VP
+                    (VBN Turned)
+                    (ADVP
+                        (RB loose)
+                    )
+                    (PP
+                        (IN in)
+                        (NP
+                            (NP
+                                (NNP Shane)
+                                (NNP Longman)
+                                (POS 's)
+                            )
+                            (NN trading)
+                            (NN room)
+                        )
+                    )
+                )
+            )
+            (, ,)
+            (NP
+                (DT the)
+                (NN yuppie)
+                (NNS dealers)
+            )
+            (VP
+                (AUX do)
+                (NP
+                    (NP
+                        (RB little)
+                    )
+                    (ADJP
+                        (RB right)
+                    )
+                )
+            )
+            (. .)
+        )
+    )
 
 
