@@ -638,6 +638,8 @@ class Tree(object):
         the MLE PCFG that is generated form the UC CNF from of the
         tree.
         '''
+        
+        self.collapse_unary().chomsky_normal_form()
 
         def recur_bigram_cnt(self, def_dict):
             '''
@@ -784,7 +786,7 @@ class prob_CKY():
     def parse_successful(self):
         num_words = len(self.word_list)
         if self.table[0][num_words-1]['TOP'] > 0:
-            return True
+            return self.table[0][num_words-1]['TOP']
         else:
             return False
 
