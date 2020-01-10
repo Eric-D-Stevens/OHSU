@@ -163,9 +163,13 @@ I can now play the videos with my local `ffplay` and see the full resolution.
 
 #### 1) What kind of data does it contain?
 
-As it turns out, this data consists of many videos of people of various skill levels attempting a suturing task with robotic arms.
+As it turns out, this data consists of many videos of people of various skill levels attempting a suturing task on an artifical wound using the robotic system [da Vinci](https://www.youtube.com/watch?v=0XdC1HUp-rU.).
 
 <img src=ffplay_full.png>
 
 
+#### 2) Where does the data come from?
 
+Elsewhere in the parent directory I was able to track down a document that explains what this data is:
+
+[da Vinci Data Collection Session 8/18/04](./data_desc.doc)“Goal: collect from three surgeons of differing skill levels during performance of a simple suturing task.  Hopefully we’ll be able to identify the same skill differences using our automatic and objective technique.”
