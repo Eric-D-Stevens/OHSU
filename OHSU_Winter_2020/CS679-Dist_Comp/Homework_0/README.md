@@ -95,7 +95,7 @@ stevener@bigbird0:/l2/corpora/LDC$ ls -l | grep -c LDC
 
 So it appears that **there are 102 LDC corpora** in the `/l2/corpora/ldc` directory.
 
-### Question: Pack any corpus
+### Question: Pick any corpus
 
 I stumbled across a folder containing some video files that intrigued me. The directory is located at:
 
@@ -122,9 +122,9 @@ I needed to discover what these video files contained. I was delighted to find t
 
 <img src=ffplay.png>
 
-I had to come up with a way of running the video files. While port forwarding had been suggested, I didn’t know whether the older broswer on the bigbird system would support the codec for the specific video files. I did, however, know that FFMPEG would support the codec, since it was attempting to generate video out on the command line in bigbird.
+I had to come up with a way of running the video files. While port forwarding had been suggested, I didn’t know whether the older browser on the bigbird system would support the codec for the specific video files. I did, however, know that FFMPEG would support the codec, since it was attempting to generate video out on the command line in bigbird.
 
-The solution, mount the remote file system on my local machine and use my local FFMPEG to run the video files. This is acomplished using the `sshfs` utility. On my Mac I used home brew to install the `sshfs` utility by running the commands:
+The solution, mount the remote file system on my local machine and use my local FFMPEG to run the video files. This is accomplished using the `sshfs` utility. On my Mac I used home brew to install the `sshfs` utility by running the commands:
 
 ```
 brew cask install osxfuse
@@ -134,7 +134,7 @@ followed by
 brew install sshfs
 ```
 
-I then created a mountin directory called `droplet` on my local machine:
+I then created a mounting directory called `droplet` on my local machine:
 ```
 mkdir droplet
 ```
@@ -163,7 +163,7 @@ I can now play the videos with my local `ffplay` and see the full resolution.
 
 #### 1) What kind of data does it contain?
 
-As it turns out, this data consists of many videos of people of various skill levels attempting a suturing task on an artifical wound using the robotic system [da Vinci](https://www.youtube.com/watch?v=0XdC1HUp-rU.).
+As it turns out, this data consists of many videos of people of various skill levels attempting a suturing task on an artificial wound using the robotic system [da Vinci](https://www.youtube.com/watch?v=0XdC1HUp-rU.).
 
 <img src=ffplay_full.png>
 
@@ -173,3 +173,80 @@ As it turns out, this data consists of many videos of people of various skill le
 Elsewhere in the parent directory I was able to track down a document that explains what this data is:
 
 [da Vinci Data Collection Session 8/18/04](./data_desc.doc)“Goal: collect from three surgeons of differing skill levels during performance of a simple suturing task.  Hopefully we’ll be able to identify the same skill differences using our automatic and objective technique.”
+
+#### 3) How big is the data?
+
+First looking at the size on disk, we will ignore the fact that there are a few html files in there. Their size is negligible with respect to the video files. **We see that there are about 143 Megabytes** worth of video data.
+
+``` bash
+bash 22:20:03 ~/droplet/IntuitiveTrip2007  $: 
+    du -sh videos/
+143M	videos/
+```
+To get the number of video files we can use the same method we used to count the number of copra in the previous section.
+
+```bash
+bash 22:24:23 ~/droplet/IntuitiveTrip2007/videos  $: 
+    ls | grep -c .avi
+50
+```
+We see that **there are 50 videos** that make up these 143 megs of data.
+
+## 3. Running a Slurm job
+
+```bash
+stevener@bigbird0:~$ srun -N 20 hostname
+bigbird62
+bigbird1
+bigbird16
+bigbird9
+bigbird20
+bigbird3
+bigbird17
+bigbird12
+bigbird13
+bigbird5
+bigbird11
+bigbird2
+bigbird8
+bigbird19
+bigbird15
+bigbird4
+bigbird14
+bigbird18
+bigbird7
+bigbird6
+```
+
+40 appears to be to many nodes:
+
+```bash
+stevener@bigbird0:~$ srun -N 40 hostname
+srun: error: Unable to allocate resources: Node count specification invalid
+```
+## 4. Viewing files in HDFS
+
+#### Question: How many file and subdirectories are there in /data?
+
+```bash
+stevener@bigbird0:~$ hadoop fs -ls /data
+Found 7 items
+drwxr-xr-x   - hdfs hdfs           0 2018-01-23 14:33 /data/medline
+-rw-r--r--   3 hdfs hdfs  2173502659 2018-01-09 14:09 /data/nyt_eng.txt.bz2
+drwxr-xr-x   - hdfs hdfs           0 2018-01-17 15:41 /data/nyt_splits
+drwxr-xr-x   - hdfs hdfs           0 2018-01-08 19:59 /data/pmc
+-rw-r--r--   3 hdfs hdfs 20718119505 2018-01-26 11:06 /data/pmc_full.bz2
+drwxr-xr-x   - hdfs hdfs           0 2018-01-24 16:35 /data/reddit
+drwxr-xr-x   - hdfs hdfs           0 2018-01-24 14:11 /data/scihub
+```
+
+There are **7 files and subdirectories** in the /data directory.
+
+#### Question: How much space is available on our HDFS system? 
+
+```bash
+stevener@bigbird0:~$ hadoop fs -df -h
+Filesystem                             Size   Used  Available  Use%
+hdfs://hadoopns1.cslu.ohsu.edu:8020  18.0 T  6.2 T     11.3 T   34%
+```
+There is **11.3 Terabytes** of space available on the HDFS.
