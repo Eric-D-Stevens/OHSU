@@ -1,4 +1,5 @@
 import nose
+import pickle
 import torch
 import os
 from nose.tools import eq_, assert_almost_equals, assert_in, assert_true, assert_false, assert_greater, assert_less
@@ -12,7 +13,7 @@ def setup_module():
 
 def test_d3_1_setup():
     global c2i, i2c
-    
+
     mod = lm.NameGenerator(
         input_vocab_size=len(c2i),
         n_embedding_dims=25,
@@ -20,13 +21,13 @@ def test_d3_1_setup():
         n_lstm_layers=1,
         output_vocab_size=len(c2i)
     )
-    
+
     x = vocab.sentence_to_tensor("hello there", c2i, True)
-    
+
     y_hat, hidden_state = mod(x, mod.init_hidden())
-    
+
     # is the output the proper size?
-    eq_(torch.Size([1,13,78]), y_hat.shape) # counting <bos> and <eos>
+    eq_(torch.Size([1,13,77]), y_hat.shape) # counting <bos> and <eos>
     
     # do things add up to 1?
     sum_of_probs_at_first_pos = y_hat.squeeze()[0].exp().sum().item()

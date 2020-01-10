@@ -1,0 +1,886 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Homework9.Critique}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{cs-560-homework-9-critique}{%
+\section{CS 560: Homework 9 Critique}\label{cs-560-homework-9-critique}}
+
+\hypertarget{eric-stevens}{%
+\subsubsection{Eric Stevens}\label{eric-stevens}}
+
+\hypertarget{december-9-2018}{%
+\subsubsection{December 9, 2018}\label{december-9-2018}}
+
+    \hypertarget{question-1}{%
+\subsubsection{Question 1}\label{question-1}}
+
+    Before you attempt to write the forward planner, make sure you
+understand how to use the \textbf{proveall} procedure. Give the python
+code to call proveall to prove the following.
+
+    a is on b in the initial world.
+
+The action of picking up a off of b is possible in the initial world.
+
+The robot is holding a after it picks up a off of b from the initial
+world.
+
+The robot's hand is empty after putting a on the table, after picking up
+a off of b from the initial world.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}52}]:} \PY{n}{query1} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{on}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{init}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+                   \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{poss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pickup}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{init}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} 
+                   \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{holding}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{do}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pickup}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{init}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,}
+                   \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{empty}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{do}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{putdown}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{do}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pickup}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{init}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{]}\PY{p}{]}
+         
+         \PY{n}{proveall}\PY{p}{(}\PY{n}{query}\PY{o}{=}\PY{n}{query1}\PY{p}{,}\PY{n}{kb}\PY{o}{=}\PY{n}{kb}\PY{p}{,}\PY{n}{indent}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}52}]:} [[]]
+\end{Verbatim}
+            
+    \hypertarget{question-1-critique}{%
+\subsubsection{Question 1 Critique}\label{question-1-critique}}
+
+I believe my answer is still valid here, it is just returning every
+possible combination of all of these things rather than inspecting them
+individually.
+
+    \hypertarget{question-2}{%
+\subsubsection{Question 2}\label{question-2}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}53}]:} \PY{n}{query2} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{on}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Block\PYZus{}on\PYZus{}table\PYZus{}in\PYZus{}inital\PYZus{}world}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{init}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                   \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{poss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Action\PYZus{}possible\PYZus{}in\PYZus{}initail\PYZus{}world}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{init}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+                   \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{poss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Action\PYZus{}possible\PYZus{}after\PYZus{}pickup\PYZus{}a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{do}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pickup}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{init}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{]}
+         
+         \PY{n}{ans} \PY{o}{=} \PY{n}{proveall}\PY{p}{(}\PY{n}{query}\PY{o}{=}\PY{n}{query2}\PY{p}{,} \PY{n}{kb}\PY{o}{=}\PY{n}{kb}\PY{p}{,} \PY{n}{indent}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{ans}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}53}]:} [['Block\_on\_table\_in\_inital\_world',
+           'b',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'a', 'b'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 'b']],
+          ['Block\_on\_table\_in\_inital\_world',
+           'b',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'a', 'b'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 'c']],
+          ['Block\_on\_table\_in\_inital\_world',
+           'b',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'a', 'b'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 't']],
+          ['Block\_on\_table\_in\_inital\_world',
+           'b',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'c', 't'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 'b']],
+          ['Block\_on\_table\_in\_inital\_world',
+           'b',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'c', 't'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 'c']],
+          ['Block\_on\_table\_in\_inital\_world',
+           'b',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'c', 't'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 't']],
+          ['Block\_on\_table\_in\_inital\_world',
+           'c',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'a', 'b'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 'b']],
+          ['Block\_on\_table\_in\_inital\_world',
+           'c',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'a', 'b'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 'c']],
+          ['Block\_on\_table\_in\_inital\_world',
+           'c',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'a', 'b'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 't']],
+          ['Block\_on\_table\_in\_inital\_world',
+           'c',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'c', 't'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 'b']],
+          ['Block\_on\_table\_in\_inital\_world',
+           'c',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'c', 't'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 'c']],
+          ['Block\_on\_table\_in\_inital\_world',
+           'c',
+           'Action\_possible\_in\_initail\_world',
+           ['pickup', 'c', 't'],
+           'Action\_possible\_after\_pickup\_a',
+           ['putdown', 'a', 't']]]
+\end{Verbatim}
+            
+    \hypertarget{question-2-critique}{%
+\subsubsection{Question 2 Critique}\label{question-2-critique}}
+
+As in \textbf{Question 1}, I believe my answer is still valid here, it
+is just returning every possible combination of all of these things
+rather than inspecting them individually. Also I do not check to ensure
+that an object is a block when using the on predicate because I believe
+that this is assured by the KB. I think that, for both liberties that I
+took, the output of my implementation demonstrates that it is accurate.
+
+    \hypertarget{question-3}{%
+\subsubsection{Question 3}\label{question-3}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}58}]:} \PY{k}{def} \PY{n+nf}{forward\PYZus{}planner}\PY{p}{(}\PY{n}{kb}\PY{p}{)}\PY{p}{:}
+             
+             \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}The frontier will begin with}
+         \PY{l+s+sd}{    just the single element init.\PYZsq{}\PYZsq{}\PYZsq{}}
+             \PY{n}{new\PYZus{}frontier} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{init}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         
+             \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}On each iteration (hint: while loop), }
+         \PY{l+s+sd}{    you first see if you can prove that goal}
+         \PY{l+s+sd}{    is true of the current world.\PYZsq{}\PYZsq{}\PYZsq{}}
+             \PY{k}{while} \PY{n+nb}{len}\PY{p}{(}\PY{n}{new\PYZus{}frontier}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+                 
+                 \PY{c+c1}{\PYZsh{}current world}
+                 \PY{n}{current\PYZus{}world} \PY{o}{=} \PY{n}{new\PYZus{}frontier}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+                 
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{World:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{current\PYZus{}world}\PY{p}{)}
+                 
+                 \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}If it is, then you can stop.\PYZsq{}\PYZsq{}\PYZsq{}}
+                 \PY{n}{ans} \PY{o}{=} \PY{n}{proveall}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{goal}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{current\PYZus{}world}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{kb}\PY{p}{)}
+                 \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{ans}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:} \PY{k}{return} \PY{k+kc}{True}
+                 
+                 \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}Otherwise, you need to find all actions that are}
+         \PY{l+s+sd}{        possible (using proveall) in the current world. \PYZsq{}\PYZsq{}\PYZsq{}}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Goal is not true}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                 \PY{n}{possible\PYZus{}actions} \PY{o}{=} \PY{n}{proveall}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{poss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Action}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{current\PYZus{}world}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{kb}\PY{p}{)}
+                 
+                 \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}For each possible action, you can construct the new world as}
+         \PY{l+s+sd}{        do(Action,World). This will give you all of the neighbors of the}
+         \PY{l+s+sd}{        current world. You then add the neighbors to the frontier using a }
+         \PY{l+s+sd}{        breath\PYZhy{}first search strategy.\PYZsq{}\PYZsq{}\PYZsq{}}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Neighbor worlds:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                 \PY{k}{for} \PY{n}{action} \PY{o+ow}{in} \PY{n}{possible\PYZus{}actions}\PY{p}{:}
+                     \PY{n}{new\PYZus{}frontier}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{do}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{action}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{current\PYZus{}world}\PY{p}{]}\PY{p}{)}
+                     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{   }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{do}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{action}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{current\PYZus{}world}\PY{p}{]}\PY{p}{)}
+                 \PY{n}{new\PYZus{}frontier} \PY{o}{=} \PY{n}{new\PYZus{}frontier}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                 
+             \PY{c+c1}{\PYZsh{} empty front}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No solution found}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+             \PY{k}{return} \PY{k+kc}{False}
+         
+         \PY{n}{forward\PYZus{}planner}\PY{p}{(}\PY{n}{kb}\PY{p}{)}        
+             
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+World: init
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'b'], 'init']
+    ['do', ['pickup', 'c', 't'], 'init']
+
+
+World: ['do', ['pickup', 'a', 'b'], 'init']
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]
+    ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]
+    ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]
+
+
+World: ['do', ['pickup', 'c', 't'], 'init']
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 't'], 'init']]
+    ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], 'init']]
+
+
+World: ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]
+    ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]
+
+
+World: ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]
+    ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]
+
+
+World: ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]
+    ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]
+    ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]
+
+
+World: ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 't'], 'init']]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'c', 'a'], ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 't'], 'init']]]
+
+
+World: ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], 'init']]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], 'init']]]
+    ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], 'init']]]
+
+
+World: ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+
+
+World: ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+
+
+World: ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+
+
+World: ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'b', 'a'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'b', 't'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+
+
+World: ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+
+
+World: ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'b', 'a'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'b', 'c'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'b', 't'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+
+
+World: ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'c', 'b'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+    ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+
+
+World: ['do', ['pickup', 'c', 'a'], ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 't'], 'init']]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 'a'], ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 't'], 'init']]]]
+    ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 'a'], ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 't'], 'init']]]]
+
+
+World: ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], 'init']]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], 'init']]]]
+    ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], 'init']]]]
+    ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], 'init']]]]
+
+
+World: ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], 'init']]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], 'init']]]]
+    ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], 'init']]]]
+
+
+World: ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'c', 'a'], ['do', ['putdown', 'c', 'a'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'c', 't'], ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'b', 'a'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'b', 'a'], ['do', ['putdown', 'b', 'a'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'b', 't'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'b', 't'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'b', 't'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'b'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 'b'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 'c'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 'c'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'b', 'a'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+Goal is not true
+Neighbor worlds:
+    ['do', ['pickup', 'b', 'a'], ['do', ['putdown', 'b', 'a'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+    ['do', ['pickup', 'c', 't'], ['do', ['putdown', 'b', 'a'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]]
+
+
+World: ['do', ['putdown', 'b', 'c'], ['do', ['pickup', 'b', 't'], ['do', ['putdown', 'a', 't'], ['do', ['pickup', 'a', 'b'], 'init']]]]
+
+    \end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}58}]:} True
+\end{Verbatim}
+            
+    \hypertarget{question-4}{%
+\subsubsection{Question 4}\label{question-4}}
+
+We are mimicing Prolog here and therefore implement a negation as
+failure strategy, eliminating the need to delay.
+
+    \hypertarget{question-5}{%
+\subsubsection{Question 5}\label{question-5}}
+
+In our implementation, the \texttt{proveall} function ensures that
+anything that we add to the frontier is possible in the state that it
+was resolved from. The frontire stores the entire history of
+resolutions.
+
+    \hypertarget{question-6}{%
+\subsubsection{Question 6}\label{question-6}}
+
+The strips planner we previously implemented checks for preconditions by
+simply ensuring that the preconditions predicate list for a given action
+is a subset of the world that that action is intended to be taken from.
+This does not allow for the use of derived predicates because simply
+ensuring that the preconditions predicate list is a subset of a world
+does not take into account the predicates that could be implied implied
+by that world.
+
+    \hypertarget{question-7}{%
+\subsubsection{Question 7}\label{question-7}}
+
+Execute a top-down theorem prover to be called with the current world as
+the KB and preconditions of a desired action that are not contained
+within that world as the query. With this set up, preconditions could be
+derived on the fly.
+
+    \hypertarget{question-8}{%
+\subsubsection{Question 8}\label{question-8}}
+
+Yes, in this case we can use derived predicates because the input to
+\texttt{proveall} takes the form of a \texttt{poss} function. The
+\texttt{proveall} function will attempt to resolve any preconditions
+using the knowledge base.
+
+    \hypertarget{question-9}{%
+\subsubsection{Question 9}\label{question-9}}
+
+The primative \texttt{clear(A)} could be defined as a derivative in
+terms of the \texttt{on(B,A)} predicate like so:
+\(clear(A) \longleftarrow \lnot on(B,A)\)
+
+\texttt{empty} could be defined using the negation of
+\texttt{holding(A)} like so: \(empty \longleftarrow \lnot holding(A)\)
+
+    \hypertarget{question-9}{%
+\subsubsection{Question 9}\label{question-9}}
+
+I forgot to ensure that \(\lnot holding(A)\) was part of the
+\(clear(A)\) derivation.
+
+    \hypertarget{question-10}{%
+\subsubsection{Question 10}\label{question-10}}
+
+I can only spot a single threat in this planner. In the two moves that
+are in parallel with causal links to the finish state, the one on the
+left has an add list that includes \texttt{!clear(m)} where the one on
+the right has a precondition of \texttt{clear(m)}. This is a clobber
+that can be resolved by having the action on the left follow the one on
+the right. By colapsing these actions from parallel to series in this
+way we have removed the threat and have a single, linearized solution.
+
+    \hypertarget{question-11}{%
+\subsubsection{Question 11}\label{question-11}}
+
+\begin{figure}
+\centering
+\includegraphics{attachment:image.png}
+\caption{image.png}
+\end{figure}
+
+    \hypertarget{question-12}{%
+\subsubsection{Question 12}\label{question-12}}
+
+\begin{verbatim}
+subset([],_). 
+subset([Sub_head|Sub_rest],Set) :-
+        member(Sub_head,Set),
+        subset(Sub_rest,Set).
+    
+% Told use of subtract was ok in Slack
+remove(Sub,Set,Rest) :-
+        subset(Sub,Set),    
+        subtract(Set, Sub, Rest).
+\end{verbatim}
+
+    \hypertarget{question-12-critique}{%
+\subsubsection{Question 12 Critique}\label{question-12-critique}}
+
+Just a reminder: I was told by you on slack that I was allowed to use
+\texttt{subtract} to implement \texttt{remove}. I believe my solution
+acomplishes the task.
+
+    \hypertarget{question-13}{%
+\subsubsection{Question 13}\label{question-13}}
+
+\begin{verbatim}
+neighbor([Plan,World],[[NewPlan],NewWorld]) :-
+        action(NextAction,Pre,Add,Del),
+        subset(Pre,World),
+        remove(Del,World,NewWorldMinus),
+        append(NewWorldMinus,Add,NewWorld),
+        append(Plan,NextAction,NewPlan).
+\end{verbatim}
+
+    \hypertarget{question-13-critique}{%
+\subsubsection{Question 13 Critique}\label{question-13-critique}}
+
+For this problem and the following ones I believe I have the concepts
+down for what needs to be acomplished, but my lack of firmiliarity with
+Prlogs data structures and syntax impeads me, often making it difficult
+to come to an \emph{elegant} solution. I believe I do stumble through
+and acomplish the goals for all of the questions in this section.
+
+    \hypertarget{question-14}{%
+\subsubsection{Question 14}\label{question-14}}
+
+\begin{verbatim}
+plan([[CurrentPlan,CurrentWorld]|_]) :-
+        goal(Goal),
+        subset(Goal,CurrentWorld),
+        write("\n Goal: "),
+        write(Goal),
+        write("\n CurrentWorld: "),
+        write(CurrentWorld),
+        write("\n CurrentPlan: "),
+        write(CurrentPlan),
+        !. % this cut will prevent infinite combos
+
+plan([First|Frontier]) :-
+        findall(New,neighbor(First,New),Neighbors),
+        append(Frontier,Neighbors, Temp),
+        plan(Temp).
+
+
+test() :-
+        initial(Initial),
+        plan([[[],Initial]]
+\end{verbatim}
+
+\textbf{Output:}
+
+\begin{verbatim}
+Goal: [on(c,b),on(b,a),on(a,t)]
+CurrentWorld: [block(a),block(b),block(c),table(t),on(a,t),on(b,a),on(c,b),clear(c),empty]
+CurrentPlan: [[[[[[pickup(a,b)|putdown(a,t)]|pickup(b,c)]|putdown(b,a)]|pickup(c,t)]|putdown(c,b)]]
+true.
+\end{verbatim}
+
+    \hypertarget{question-14-critique}{%
+\subsubsection{Question 14 Critique}\label{question-14-critique}}
+
+Once again, here my understanding of Prolog syntax and data structures
+makes it difficult to come to an elegant output. None the less, I
+believe by examining my output you will see that, although ugly, the
+derived plan is accurate.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

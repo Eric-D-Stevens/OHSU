@@ -1,0 +1,666 @@
+---
+title: "iLab 2 Assessment"
+author: "Eric Stevens"
+date: "10/30/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Environment Setup
+```{r}
+library(tidyverse) # all the good stuff
+library(readxl) # for reading in xlsx files
+library(janitor) # for clean_names
+library(knitr) # for kable
+library(moderndive) # for getting tables
+library(corrr) # for correlation matrix
+library(skimr) # for skim
+library(GGally) # for ggpairs
+library(broom) # for pulling out model results
+```
+
+<div class="row" style="background:lightblue">
+
+#### Assessment
+
+This portion of the assignment closely matches the solution.
+
+</div>
+
+
+
+## The Data
+
+#### Retrieve the data:
+```{r}
+# install.packages("rdryad")
+# install.packages("purrr")
+library(rdryad) # to access the API
+library(readxl) # to read in the xlsx file
+library(purrr) # for 1 function: pluck!
+path_to_xlsx <- dryad_fetch(dryad_files(doi = '10.5061/dryad.7763s/1')) %>% 
+  pluck(1)
+vitd <- read_xlsx(path_to_xlsx, sheet = 1)
+```
+
+#### Clean and view the data:
+```{r}
+library(janitor)
+vitd <- vitd %>% 
+  clean_names()
+glimpse(vitd)
+```
+
+#### Code book
+```{r}
+codebook <- read_xlsx(path_to_xlsx, sheet = 2)
+lm_vars <- c("sex", "_zhfa", "ageyears", "_25D")
+codebook %>% 
+  filter(Variable %in% lm_vars) %>% 
+  knitr::kable()
+```
+
+<div class="row" style="background:lightblue">
+
+#### Assessment
+
+This portion of the assignment closely matches the solution.
+
+</div>
+
+## Exploratory Data Analysis
+### Raw Data
+First lets extract the raw data that is of interest to us and take a glimpse 
+at the raw data. 
+```{r}
+data <- select(vitd, id, sex, ageyears, zhfa, x25d)
+glimpse(data)
+```
+
+### Summary Statistics
+Now lets get the summary statistics for the data we have.
+```{r}
+skim(data)
+```
+
+Now lets get the correlations between the numeric variables. Since 'sex' is 
+categorical variable we will look at three different cases. First we will 
+look at the correlations of all the data, then we will look at correlations 
+among males, and finally we will look correlation among females.
+
+##### All data correlation:
+```{r}
+data %>% select("ageyears", "zhfa", "x25d") %>% corrr::correlate()
+```
+
+From this we can that there is a slight negative correlation between the age 
+of the child being observed and the amount of the vitamin serum. There is 
+also a slight negative correlation between the height z score and and the 
+amount of the vitamin serum.
+
+Since we do have the one binary categorical variable (sex) it is worth 
+splitting the data up and examining the subsets of the data individually 
+to see if there is a drastic difference in correlation. If there is then 
+a better model will be one that takes the category into account.
+
+##### Male correlation:
+```{r}
+data %>% filter(sex == "M") %>%
+  select("ageyears", "zhfa", "x25d") %>%
+  corrr::correlate()
+```
+
+##### Female correleation:
+```{r}
+data %>% filter(sex == "F") %>%
+  select("ageyears", "zhfa", "x25d") %>%
+  corrr::correlate()
+```
+
+We can see that there is a huge difference  between male and female 
+in terms of correlation between age and the vitamin serum. The female 
+coefficient if 5 times the magnitude as the males. This means that, in a 
+linear model, female vitamin serum will drop 5 times the amount males drop
+over time.
+
+
+### Visualizations
+
+Now lets look at some data visualizations to help us better understand the 
+data set.
+
+First we will create a scatter plot that shows the presence of the serum 
+by sex. A jitter is used to allow us to quantify the number of observations.
+
+```{r }
+ggplot(data, aes(x = sex, y = x25d)) +
+  geom_jitter(position = position_jitter(width = 0.1), alpha = 0.5)
+```
+
+It seems that the data set has about an equal number of males and females. 
+it is worth noting that the female serum level appears to be noticeable lower 
+than male levels.
+
+Now lets get and idea of the age of our observees. To do this we will use 
+a histogram. We will also color code the histogram by sex to confirm the 
+gender makeup of the observees.
+
+```{r }
+ggplot(data,aes(x=ageyears, fill=sex)) + 
+  geom_histogram(bins = 10) +
+  ggtitle("Ages of observants")
+```
+
+We can see that there is a pretty consistent age distribution from about 
+age 7 to age 13. Can confirm that there are about the same number of male 
+and female subjects in the data set.
+
+
+Now lets look at some density plots to see how much of a spread there is in 
+the data.
+```{r }
+ggplot(data, aes(x25d, colour=sex, group=sex)) + geom_density()
+```
+
+```{r }
+ggplot(data, aes(zhfa, colour=sex, group=sex)) + geom_density()
+
+
+```
+
+
+form this we can see that there is a basically a normal distribution of 
+for both male and female both in vitamin serum levels and in height. There 
+is definitely a slight skew in the female data towards less vitamin 
+serum compared to the males. The 'zhfa' plot shows us that both males and 
+females are around a standard deviations shorter than the average height 
+for their respective ages.
+
+
+
+### Questions
+##### 1. How many variables/columns?
+```{r}
+ncol(data)
+colnames(data)
+```
+As we can see there are four columns with the above names.
+
+##### 2. How many rows/observations?
+```{r}
+nrow(data)
+```
+There are 537 observations.
+
+##### 3. Which variables are numbers?
+```{r}
+data %>% select_if(is.numeric) %>% colnames()
+```
+The 3 variables above are numeric.
+
+##### 4. Which variables are catigorical?
+```{r}
+data %>% select_if(is.character) %>% colnames()
+```
+Only the 'sex' variable is categorical.
+
+##### 5. There is one row per person.
+
+<div class="row" style="background:lightblue">
+
+#### Assessment
+
+In this section, the solution I provided seems to have substantially more 
+detail than the solution in the sections before the questions. In the 
+questions themselves, the solution provides greater detail than my answers, 
+but this was not a requirement of the assignment and my answers are correct.
+I did leave off the last question for some reason but did do correlation 
+analysis above and in that analysis I got the same answers as in the 
+provided solution.
+
+</div>
+
+## Regression Model
+
+Our goal is to come up with a model that will predict the amount of the 
+vitamin serum in the observee based on their age, sex, and relative height.
+Lets first fit a model that ignores gender, since it is the only categorical 
+variable.
+
+```{r}
+vit25d_model <- lm(x25d ~ ageyears + zhfa, data )
+get_regression_table(vit25d_model)
+```
+
+
+This table shows us an intercept of 88.5 nmol/L. This means that if someone 
+was of average height and 0 years old, this would be the expected level of 
+the vitamin serum in their body. The age coefficient is -1.7, meaning that 
+for every year we go up in age there will be a corresponding drop in the 
+vitamin serum of 1.7 nmol/L. This can be visualized as follows:
+
+```{r}
+select(data, ageyears, x25d) %>%
+ggplot( aes(x = ageyears, y = x25d)) +
+  geom_jitter() +
+  #labs(x = "Age", y = "Teaching Score", color = "Gender") +
+  geom_smooth(method = "lm", se = FALSE)
+```
+we see that over the entire graph the line drops about 13 nmol/L and as it 
+ascends about 8 years. 13/8 is roughly the 1.7 we calculated in the last block.
+Also notice that if the x axis was to include the 0 point the line would hit 
+the x=0 axis at roughly 88 nmol/L
+
+Lets break the model up into the separate sexes, since we have already seen 
+that there are differences between the sexes and their correlations.
+
+Lets again look at the age regression:
+
+```{r}
+ggplot(data, aes(x = ageyears, y = x25d, color = sex)) +
+  geom_point() +
+  #labs(x = "Age", y = "Teaching Score", color = "Gender") +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+As could have been predicted from our correlation table, we can see that 
+the male observees are maintaining there vitamin serum levels over time 
+whereas the females have a sharp drop over time.
+
+Lets also look at how the height for age z scores correlate with serum 
+levels:
+
+```{r}
+ggplot(data, aes(x = zhfa, y = x25d, color = sex)) +
+  geom_point()+
+  #labs(x = "Age", y = "Teaching Score", color = "Gender") +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+Here the slopes of the lines are almost identical. The slight downward slope 
+indicates that the shorter one is relative to the average for their age the 
+more serum they will have in there system. The difference in y intercepts here 
+indicates that males are on average likely to have higher levels of serum 
+regardless of age.
+
+Lets build a multi regression interaction model that accounts for all the 
+combinations of effects that could be effecting the outcome of these test. 
+This will be the linear model that has the most degrees of freedom. This is
+done by allowing coefficients that will adjust the intercept and slope of the 
+model based on sex.
+
+
+```{r}
+vit25d_model_interaction <- lm(x25d ~ ageyears * sex + zhfa * sex, data )
+get_regression_table(vit25d_model_interaction)
+
+```
+
+Lets look at the results of this model more closely.
+
+
+##### Intercept
+The intercept of the model is 96.88. This means that at average height and 
+at age 0 the a female is likely to have 96.88 nmol/L of the vitamin serum in 
+her body. This only applies to the female because of the sex dimension 
+we added to the model. This will be explained shortly.
+
+##### 'ageyears' Coefficent
+The ageyears is modeled to be roughly -3. This means that for every year in 
+age a female grows up her vitamin serum levels will drop by 3 nmol/L.
+
+##### 'sexM' Coefficent
+This coefficient allows for constant difference between male and female 
+models and explains the reason for the only female intercept referred to 
+above. The value of -16.67 means that whenever the data being modeled is a 
+male, there will be a constant of 16.67 subtracted form the model described 
+above. This is what allows the first intercept to be different for male. 
+For a male of average height at age 0 the expected serum level will be 
+$ 96.88 - 16.67 nmol/L $.
+
+##### 'ageyears:sexM' Coefficent
+This coefficient allows the slope of the model to be different for males 
+than it is for females. The slope for males will be the sum of the 
+'ageyears' coefficient and the 'ageyears:sexM' coefficient. In other words, 
+for each year that male observees grow the will have (-3.10 + 2.97) less 
+nmol/L of serum in their systems.
+
+##### 'zhfa' Coefficent
+With a value of -1.85, the coefficient implies that for every standard 
+deviation taller than the average for their age they are, women will have 
+1.85 fewer nmol/L of the serum in their bodies.
+
+##### 'sexM:zhfa'
+In the same way the 'ageyears:sexM' allowed the slope of the male age line 
+to differ from the female line, this one allows the the male zhfa line to 
+differ from the females. The +0.23 coefficient is suspicious because this 
+means that the correlation for males will be (-1.85 + 0.23) fewer nmol/L of 
+serum per standard deviation in height. This implies that we have a less 
+steep correlation for males than females on the zhfa, which is the appears 
+to be the opposite of what we saw in the x25d/zhfa graph, where the male 
+line seemed to be steeper. This degree of freedom may be resulting in 
+over fitting.
+
+To answer the question about the claims made in the paper about a 19% higher 
+male vit25 rate at age 9.9, which we will assume is the mean age of the 
+data, we need to create a slightly different model that mean zeros on age. 
+The other claim was that male levels stay the same as female rates drop. 
+Lets look at the regression table:
+
+```{r}
+vit25d_model_age_sex <- lm(x25d ~ scale(ageyears)*sex, data )
+get_regression_table(vit25d_model_age_sex)
+```
+
+As we can see we have the same result from this table. The intercept ~68 is 
+the vitamin levels of females at age 9.9. The intercept plus the sexM is 
+where males are at the same age. 13/68 = 0.19 or 19%. The ageyears coefficient
+shows that women drop off with age while men stay the same.
+
+
+<div class="row" style="background:lightblue">
+
+#### Assessment
+
+In the regression analysis I use the `scale(ageyears)` process instead of 
+using `mutate` to scale the ageyears values. It appears that I build several 
+different models where the solution only provides one. My models include 
+everything that was done in the solution and more. 
+
+</div>
+
+## Residual Analysis
+
+Now lets examine how well our model actual fit the data.
+
+```{r}
+regression_points <- get_regression_points(vit25d_model_interaction)
+regression_points
+```
+There are very large residuals that correspond to serum level differences 
+to the point that it leads me to believe that the model is useless in terms 
+of predicting what someones serum levels will be. The best this model can 
+accomplish is discovering weak trends. This is visualized below.
+
+```{r}
+ggplot(regression_points, aes(x = residual)) +
+  geom_histogram(binwidth = 2, color = "white") +
+  labs(x = "Residual") +
+  facet_wrap(~sex)
+```
+
+The normal distribution of the data implies that there is some correlation, 
+but again, the standard deviations of this data are huge in terms of amount 
+of serum.
+
+```{r}
+ggplot(regression_points, aes(x = ageyears, y = residual)) +
+  geom_point() +
+  labs(x = "ageyears", y = "Residual") +
+  geom_hline(yintercept = 0, col = "blue", size = 1) +
+  facet_wrap(~ sex)
+```
+
+There does not appear to be any symmetric pattern in the residual plots, a 
+good sign that our model is the best it could be. 
+
+```{r}
+ggplot(regression_points, aes(x = zhfa, y = residual)) +
+  geom_point() +
+  labs(x = "zhfa", y = "Residual") +
+  geom_hline(yintercept = 0, col = "blue", size = 1) +
+  facet_wrap(~ sex)
+```
+
+
+<div class="row" style="background:lightblue">
+
+#### Assessment
+
+You forgot to change your x-axis label on your second graph from `age` to 
+`zhfa`
+
+</div>
+
+## Outlier Analysis
+
+```{r}
+vit25_diag <- broom::augment(vit25d_model_interaction, data) %>%
+  mutate(.ext.resid = rstudent(vit25d_model_interaction))
+glimpse(vit25_diag)
+```
+
+```{r}
+high_hat <- vit25_diag %>%
+              select(ageyears, zhfa, x25d,.hat) %>%
+              filter(.hat > 4*mean(.hat))
+
+high_hat
+```
+```{r}
+vit25_diag %>%
+  ggplot(aes(x=ageyears, y=.hat)) + geom_point()
+
+vit25_diag %>%
+  ggplot(aes(x=zhfa, y=.hat)) + geom_point() 
+```
+
+```{r}
+high_dis <- vit25_diag %>% 
+  select(ageyears, zhfa, x25d, .std.resid, .ext.resid) %>%
+  arrange(desc(.ext.resid)) %>%
+  slice(1:5)
+
+high_dis
+```
+
+```{r}
+ggplot(vit25_diag, aes(x=.hat, y=.ext.resid, alpha=.2, size=.cooksd)) + geom_point()
+```
+
+
+
+By looking at the original plots I would expect there to be around 5% high
+discrepancy. From the graph above we can see that there are point that have 
+high leverage and there are points that have high discrepancy but there does 
+not seem to be many points that have both. The influence on the model is high 
+for many of the points, but it seems to be distributed fairly evenly. I think 
+that this data is very noisy and that is the reason for the high levels of 
+influence. Due to the noise in this data I would not remove any of the data 
+points. I think this model is a very rough fit for both the males and the 
+females and cannot say which one is better suited to the model.
+
+
+<div class="row" style="background:lightblue">
+
+#### Assessment
+
+My graphs do not included threshold lines or separate out by sex. Both of 
+these I wish I had done. It would have made my graphs more clear. Aside from 
+that my graphs appear to contain vary similar values, although the information
+is presented in a different way. 
+
+</div>
+
+
+## Sum of Squares
+
+The following code makes a table of the different sum of squares. This 
+consists of total sum of squares, residual sum of squares, and model sum 
+of squares.
+
+```{r}
+vitd_ss <- regression_points %>% 
+  summarise(total_ss = sum((x25d - mean(x25d))^2),
+            resid_ss = sum((x25d_hat - x25d)^2), 
+            model_ss = sum((x25d_hat - mean(x25d_hat))^2))
+vitd_ss
+```
+
+We can see that the total sum of squares is 125,063.5. Lets prove that the 
+sum of the residual sum squares and the model sum squares are equal to the 
+total sum squares.
+
+```{r}
+vitd_ss %>% mutate(risid_plus_model = resid_ss + model_ss)
+```
+
+We can see that the new column we added to the table is equal to total_ss
+value other than what is presumably a floating point rounding error.
+
+Now lets show that the variance of the vitamin serum levels in the data is
+equal to the total sum of squares divided by the number of data points
+minus 1.
+
+The variance is calculated as follows.
+```{r}
+var(regression_points["x25d"])
+```
+
+We see that the variance of the vitamin serum points is 236.86
+
+Now lets calculate the total sum of squares divided by the number of data points
+minus 1.
+
+```{r}
+vitd_ss %>% mutate(total_over_nminusone = total_ss / (nrow(regression_points) - 1))
+```
+
+Exactly 236.86, so we have proven this clause.
+
+
+Finally lets show that the $ R^2 $ of the data is the same as the model ss
+divided by the total ss.
+
+To get the $R^2$ value we do the following.
+```{r}
+broom::glance(vit25d_model_interaction)["r.squared"]
+```
+
+So $R^2 = 0.23634$.
+
+Now lets calculate $\frac{model ss}{total ss}$
+
+```{r}
+mutate(vitd_ss, model_ss/total_ss)
+```
+
+We can see that $R^2 = \frac{model ss}{total ss}$
+
+<div class="row" style="background:lightblue">
+
+#### Assessment
+
+My solution appears to be correct.
+
+</div>
+
+## NULL Model
+
+In the null model the only thing that is taken into consideration is the 
+intercept. In other words its a flat model.
+
+```{r}
+vitd_complete <- vitd %>% 
+  drop_na(x25d, sex, ageyears, zhfa)
+int_mod <- lm(x25d ~ 1, data = vitd_complete)
+get_regression_table(int_mod)
+```
+
+We can see that the intercept is 74.307. This is the same number we came 
+across as the mean of the vitamin serum x25d in our initial data analysis.
+
+
+Lets compare this model to our multi-regression model.
+
+```{r}
+anova(int_mod, vit25d_model_interaction)
+```
+
+The RSS in line one corresponds to the total sum squared in the multi-
+regression model. The RSS in line two is the residual sum squared in the 
+multi-regression model. The sum squared is equal to the models sum squared 
+of the multi-regression model.
+
+The difference between lm(y ~ x + z) versus lm(y ~ 1) is the degrees of 
+freedom in which the model can bend to the observations. lm(y ~ 1) has no 
+degrees of freedom, and can only make predictions based on the value of 
+the serum levels themselves; hence the point mean value model. The multi-
+regression model, lm(y ~ x + z), has two degrees of freedom it can move in 
+and will result in 3 dimensional plane of of predicted values.
+
+
+<div class="row" style="background:lightblue">
+
+#### Assessment
+
+I believe my solution is correct.
+
+</div>
+
+
+## Replicate a Plot
+
+The plot form the paper is obviously not the raw data. In the figure they 
+present the minimum appears to be around 54 nmol/L and the maximum appears 
+to be around 81. This does not match our EDA observations at all, where the 
+minimum was below 40 nmol/L and the max was over 125 nmol/L.
+
+The graph we created using the observation data in the EDA will be reproduced 
+here:
+```{r}
+ggplot(data, aes(x = ageyears, y = x25d, color = sex)) +
+  geom_point() +
+  #labs(x = "Age", y = "Teaching Score", color = "Gender") +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+If we want to replicate results similar to the ones found in the figure that 
+was presented with the paper we can alter the plot by using the modeled 
+serum level values as y coordinates and add a jitter to the plot. If we did 
+not add the jitter the plot would just correspond directly to the line. The 
+jitter creates the illusion that what we are looking at is actual data 
+rather than the model itself.
+
+```{r}
+ggplot(regression_points, aes(x = ageyears, y = x25d_hat, color = sex)) +
+  geom_jitter(width = 0.1, height = 0.1) +
+  #labs(x = "Age", y = "Teaching Score", color = "Gender") +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+I cant imagine why this would be done in a research environment. This is 
+totally misleading. To me, there appears to be no purpose to jittering the 
+model. You can just show the regression lines themselves if you want to see 
+what the model is. 
+
+<div class="row" style="background:lightblue">
+
+#### Assessment
+
+I believe my answer to this problem is correct. I do use a jitter here, 
+which is not the case in the provided solution, but I thing my result 
+matches the shape of the provided graph and also matches the x-axis of the 
+graph from the original paper, which the provided solution does not.
+
+</div>
+
+## Process
+
+To to this project I read the chapter from the course text. I followed 
+techniques and procedures from the multi-regression chapter. All of the 
+functions I used came from that chapter and from the assignment itself.
+I found the last section challenging because my goal to replicate the 
+graphic found in the assignment, and it did not immediately come to my mind 
+to jitter the model. I also believe that I may have added an extra degree of 
+freedom to my model that was not a requirement of the assignment. 
+
+In general, the most difficult part of these assignments are approximating 
+how much of this is a creative process that I should be doing on my own and 
+and weighing that against how the assignments will be graded in terms of 
+adhering to a strict procedure. This should become less of a problem once 
+the first grades come back and I can see where I lost points.
+

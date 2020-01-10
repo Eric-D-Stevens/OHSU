@@ -204,6 +204,7 @@ vit25d_model <- lm(x25d ~ ageyears + zhfa, data )
 get_regression_table(vit25d_model)
 ```
 
+
 This table shows us an intercept of 88.5 nmol/L. This means that if someone 
 was of average height and 0 years old, this would be the expected level of 
 the vitamin serum in their body. The age coefficient is -1.7, meaning that 
@@ -312,6 +313,21 @@ to be the opposite of what we saw in the x25d/zhfa graph, where the male
 line seemed to be steeper. This degree of freedom may be resulting in 
 over fitting.
 
+To answer the question about the claims made in the paper about a 19% higher 
+male vit25 rate at age 9.9, which we will assume is the mean age of the 
+data, we need to create a slightly different model that mean zeros on age. 
+The other claim was that male levels stay the same as female rates drop. 
+Lets look at the regression table:
+
+```{r}
+vit25d_model_age_sex <- lm(x25d ~ scale(ageyears)*sex, data )
+get_regression_table(vit25d_model_age_sex)
+```
+
+As we can see we have the same result from this table. The intercept ~68 is 
+the vitamin levels of females at age 9.9. The intercept plus the sexM is 
+where males are at the same age. 13/68 = 0.19 or 19%. The ageyears coefficient
+shows that women drop off with age while men stay the same.
 
 ## Residual Analysis
 
@@ -355,6 +371,55 @@ ggplot(regression_points, aes(x = zhfa, y = residual)) +
   geom_hline(yintercept = 0, col = "blue", size = 1) +
   facet_wrap(~ sex)
 ```
+
+## Outlier Analysis
+
+```{r}
+vit25_diag <- broom::augment(vit25d_model_interaction, data) %>%
+  mutate(.ext.resid = rstudent(vit25d_model_interaction))
+glimpse(vit25_diag)
+```
+
+```{r}
+high_hat <- vit25_diag %>%
+              select(ageyears, zhfa, x25d,.hat) %>%
+              filter(.hat > 4*mean(.hat))
+
+high_hat
+```
+```{r}
+vit25_diag %>%
+  ggplot(aes(x=ageyears, y=.hat)) + geom_point()
+
+vit25_diag %>%
+  ggplot(aes(x=zhfa, y=.hat)) + geom_point() 
+```
+
+```{r}
+high_dis <- vit25_diag %>% 
+  select(ageyears, zhfa, x25d, .std.resid, .ext.resid) %>%
+  arrange(desc(.ext.resid)) %>%
+  slice(1:5)
+
+high_dis
+```
+
+```{r}
+ggplot(vit25_diag, aes(x=.hat, y=.ext.resid, alpha=.2, size=.cooksd)) + geom_point()
+```
+
+
+
+By looking at the original plots I would expect there to be around 5% high
+discrepancy. From the graph above we can see that there are point that have 
+high leverage and there are points that have high discrepancy but there does 
+not seem to be many points that have both. The influence on the model is high 
+for many of the points, but it seems to be distributed fairly evenly. I think 
+that this data is very noisy and that is the reason for the high levels of 
+influence. Due to the noise in this data I would not remove any of the data 
+points. I think this model is a very rough fit for both the males and the 
+females and cannot say which one is better suited to the model.
+
 
 ## Sum of Squares
 

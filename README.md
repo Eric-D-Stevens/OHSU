@@ -1,4 +1,4 @@
-# OHSU
+#OHSU
 
 ### Fall 2018
 * CS 560: Artificial Intelligence 
@@ -9,3 +9,7 @@
 * CS 562: Natural Language Processing
 * EE 582: Digital Signal Processing
 * CS 692: Ethics
+
+### Spring 2019
+* CS 559: Machine Learning
+* CS 527: Data Science Programming

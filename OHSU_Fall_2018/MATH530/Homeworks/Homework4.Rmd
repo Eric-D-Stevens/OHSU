@@ -1,0 +1,169 @@
+---
+title: "MTH 530: Homework 4"
+output: html_notebook
+author: "Eric Stevens"
+date: "November 29, 2018"
+---
+
+## Question 1
+
+### a)
+
+**Data:**
+```{r}
+inter_n <- 73
+major_n <- 105
+minor_n <- 240
+no_n <- 1080
+
+
+inter_xbar <- 6.22
+major_xbar <- 5.81
+minor_xbar <- 5.77
+no_xbar <- 5.47
+
+
+inter_sd <- 1.62
+major_sd <- 1.43
+minor_sd <- 1.24
+no_sd <- 1.31
+```
+
+**Get Overall Mean**
+In this case, the varying number of `n`s in each category results in the need to adjust the overall mean to be weighted by the number of `n`s. We can do this by multiplying our means in each category by their respective `n`, then sum these numbers, then divide by the total number of `n`s as follows.
+
+```{r}
+weighted_sum_of_means <- (inter_n*inter_xbar) +
+  (major_n*major_xbar) +
+  (minor_n*minor_xbar) +
+  (no_n*no_xbar)
+
+weighted_sum_of_means
+
+sum_of_ns <- inter_n + major_n + minor_n + no_n
+
+sum_of_ns
+
+x_double_bar <- weighted_sum_of_means/sum_of_ns
+x_double_bar
+
+```
+
+**Sum Of Squares**
+
+
+* Between Groups
+```{r}
+inter_BT <- ((inter_xbar-x_double_bar)^2)*(inter_n)
+major_BT <- ((major_xbar-x_double_bar)^2)*(major_n)
+minor_BT <- ((minor_xbar-x_double_bar)^2)*(minor_n)
+no_BT <- ((no_xbar-x_double_bar)^2)*(no_n)
+
+BT <- inter_BT + major_BT + minor_BT + no_BT
+BT
+
+```
+
+
+* Within
+```{r}
+inter_WI <- (inter_sd^2)*(inter_n-1)
+major_WI <- (major_sd^2)*(major_n-1)
+minor_WI <- (minor_sd^2)*(minor_n-1)
+no_WI <- (no_sd^2)*(no_n-1)
+
+WI <- inter_SSE + major_SSE + minor_SSE + no_SSE
+WI
+```
+
+* Total
+```{r}
+SST = BT + WI
+SST
+```
+
+**F Calculation**
+```{r}
+BToDF <- BT/(4-1)
+WIoDF <- WI/(inter_n+major_n+minor_n+no_n-4)
+
+F_value <- BToDF/WIoDF
+
+BToDF
+WIoDF
+F_value
+
+```
+
+
+
+| -       | Sum of Squares | Degrees of Freedom | Mean Squared | F        |
+|---------|----------------|--------------------|--------------|----------|
+| Total   | 2677.968       | 1497               |              |          |
+| Between | 57.18368       | 3                  | 19.06123     | 10.86601 |
+| Within  | 2620.785       | 1494               | 1.754207     |          |
+
+
+
+
+
+
+### b
+
+**Get critical F value**
+```{r}
+qf(0.95, (4-1), inter_n+major_n+minor_n+no_n-4)
+```
+Since our F value is over 10 and our and our critical F value is 2.6, we can reject the null. This means that two or more of our categories are statistically significantly different from one and other. 
+
+### c
+* The initial data is normally distributed.
+* Equal variance among groups.
+* Samples are drawn independently of one and other.
+
+### d
+Yes, further analysis should be done to determine which mean or means have the statistically significant difference that is causing the F score allowing us to reject the null. 
+
+
+## Question 2
+
+```{r}
+library(tidyverse)
+library(resampledata)
+cuckoos <- Cuckoos
+head(cuckoos)
+```
+
+### a
+
+```{r}
+cuckoos %>% group_by(Bird) %>%
+  ggplot(aes(x=Bird, y=Eggs)) +
+  geom_boxplot()
+```
+
+### b
+```{r}
+# Compute the analysis of variance
+the_anova <- aov(Eggs~Bird, data = cuckoos)
+# Summary of the analysis
+summary(the_anova)
+```
+
+
+### c
+
+```{r}
+TukeyHSD(the_anova) 
+```
+
+
+From this we can conclude that there is a statistically significant difference in egg size from each bird type to any other bird type.
+
+### d
+
+```{r}
+TukeyHSD(the_anova, p.adjust(the_anova,method = "bonferroni"))
+```
+
+I cannot figure out how to do this. 

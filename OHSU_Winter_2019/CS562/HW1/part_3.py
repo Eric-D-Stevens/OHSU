@@ -178,11 +178,18 @@ def main():
     pmi_list_thresh_0 = get_pmi()
     print "The 30 highest PMI pairs with threshold 0 are: "
     for index in range(30): print pmi_list_thresh_0[index]
-
-
+    
     pmi_list_thresh_100 = get_pmi(threshold=100)
     print "The 30 highest PMI pairs with threshold 100 are: "
     for index in range(30): print pmi_list_thresh_100[index]
+    
+    pmi_list_thresh_300 = get_pmi(threshold=300)
+    print "The 30 highest PMI pairs with threshold 100 are: "
+    for index in range(30): print pmi_list_thresh_300[index]
+
+    pmi_list_thresh_1000 = get_pmi(threshold=1000)
+    print "The 30 highest PMI pairs with threshold 100 are: "
+    for index in range(30): print pmi_list_thresh_1000[index]
 
     for pmi_itter in pmi_list_thresh_0:
         if pmi_itter[1] == 'NEW' and pmi_itter[2] == 'YORK':

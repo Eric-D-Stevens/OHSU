@@ -1,0 +1,179 @@
+---
+title: "MTH 530: iLab 3"
+date: "November 15, 2018"
+author: "Eric Stevens"
+output: html_notebook
+---
+
+### Environment Setup
+```{r}
+library(tidyverse)
+library(infer)
+library(skimr)
+library(broom)
+```
+
+
+### Data
+```{r}
+
+# DATA PATH CHANGED HERE TO WORK WITH MY SETU{}
+mercury <- read_csv(here::here("OHSU_Fall_2018/MATH530/iLabs", "fishermen_mercury.csv"),
+                    col_types = cols(
+                      fisherman = col_factor(levels = NULL))
+                    )
+```
+
+Variables in this dataset include:
+
+* Fisherman indicator (fisherman)
+* Age in years (age)
+* Residence Time in years (restime)
+* Height in cm (height)
+* Weight in kg (weight)
+* Fish meals per week (fishmlwk)
+* Parts of fish consumed:
+  + 0=none,
+  + 1=muscle tissue only,
+  + 2=mt and sometimes whole fish,
+  + 3=whole fish (fishpart)
+* Methyl Mercury in mg/g (methyl_mercury)
+* Total Mercury in mg/g (total_mercury)
+
+
+### EDA
+
+```{r}
+glimpse(mercury)
+```
+
+```{r}
+mercury %>%
+  group_by(fisherman) %>%
+  skim()
+```
+
+```{r}
+ggplot(mercury, aes(x=methyl_mercury)) +
+  geom_histogram(bins = 10, color='white') +
+  labs(x = "Mercury") +
+  facet_wrap(~fisherman)
+
+
+ggplot(mercury, aes(x=total_mercury)) +
+  geom_histogram(bins = 10, color='white') +
+  labs(x = "Mercury") +
+  facet_wrap(~fisherman, )
+```
+
+```{r}
+ggplot(mercury, aes(total_mercury, fill = fisherman, colour = fisherman)) +
+  geom_density(alpha = 0.1) +
+  xlim(0, 7)
+```
+
+```{r}
+ggplot(mercury, aes(methyl_mercury, fill = fisherman, colour = fisherman)) +
+  geom_density(alpha = 0.1) +
+  xlim(0, 7)
+```
+
+### Check Conditions
+
+1. **Independent Observations in Both Samples:** Acording to https://libguides.library.kent.edu/SPSS/IndependentTTest, there are a few conditions that need to be met for this to be true. First, no sample can exist in both group. Ignoring errors that could have occoured in the collecting of the data (where someone who was working on the construction site was also working as a fisherman, unbeknownst to those who collected the samples), our data only has a single column representing the fisherman status of the individuals. This column is either a 1 or a 0, so there is not the possibility for a sample to be both. Next, no sample from one group can effect a sample in the other group. I believe that there is no reason that a sample taken from a construction site to effect those taken from a group of fishermen. 
+
+2. **Nearly Normal Distribution | Sample Size > 30:** From our EDA we can see that for both populations, the distribution is nearly normal. One could make an argument that this is not quite true, but luckily both populations fullfill the alternative rquirement that the sample size is greater than 30.
+
+3. **Independently Selected Samples** This was addressed in part 1 of this section, but to reitterate, there is no pairing occouring between fisherman and the construction workers. 
+
+4. **Same Variance Assumption:** Based on our EDA this assumption does not appear to be accurate, since SD for the fisherman group is 3.22 and the SD for the non-fisherman group is 1.4.
+
+### The $\delta$ Statistic
+
+
+* Pooled Standard Error
+```{r}
+n1 <- mercury %>% summarize(n1 = sum(fisherman == 1)) %>% pull(n1)
+n0 <- mercury %>% summarize(n0 = sum(fisherman == 0)) %>% pull(n0)
+
+s1 <- mercury %>% group_by(fisherman) %>% summarize(s = sd(total_mercury)) %>% filter(fisherman == 1)  %>% pull(s)
+s0 <- mercury %>% group_by(fisherman) %>% summarize(s = sd(total_mercury)) %>% filter(fisherman == 0)  %>% pull(s)
+
+sp <- sqrt(((n1-1)*s1^2+(n0-1)*s0^2)/(n1+n0-2))
+
+sp
+```
+
+
+* T statistic
+
+```{r}
+x1_bar <- mercury %>% group_by(fisherman) %>% summarize(x_bar = mean(total_mercury)) %>% filter(fisherman == 1)  %>% pull(x_bar)
+
+x0_bar <- mercury %>% group_by(fisherman) %>% summarize(x_bar = mean(total_mercury)) %>% filter(fisherman == 0)  %>% pull(x_bar)
+
+T_score = (x1_bar - x0_bar)/(sp*sqrt((s1^2/n1)+(s0^2/n0)))
+
+T_score
+
+```
+
+
+* Plot of critical T Values
+
+```{r}
+upper_tcrit <- mercury %>% 
+  specify(formula = total_mercury ~ fisherman) %>% 
+  calculate(stat = "t", order = c(1, 0))
+  
+  
+  # fill in here
+mercury %>% 
+  specify(total_mercury ~ fisherman) %>% 
+  hypothesize(null = "independence") %>% 
+  calculate(stat = "t", order = c(1,0)) %>%
+  visualize(method = "theoretical", 
+            obs_stat = upper_tcrit, 
+            direction = "both") # gives us shading
+```
+
+```{r}
+mean_diff <- T_score*(sp*sqrt((1/n1)+(1/n0)))
+mean_diff
+```
+
+
+
+With 100 fisherman and 35 non-fishermen, given the variability in total mercury present in this sample, we will reject the null hypothesis that there is no difference in total mercury levels between the two groups if we obtain a t-statistic greater than 2.777389 (absolute value, α = .05, 2-tailed). This is equivalent to saying we will reject the null hypothesis if we obtain a mean difference greater than 1.564173 (absolute value, α = .05, 2-tailed).
+
+
+### Observerd Effect $\delta$*
+
+
+```{r}
+obs_diff <- mercury %>% 
+  specify(formula = total_mercury ~ fisherman) %>% 
+  calculate(stat = "diff in means", order = c(1, 0))
+obs_diff
+```
+
+```{r}
+calc_dif = (x1_bar - x0_bar)/(sp*sqrt((1/n1)+(1/n0)))
+calc_dif
+```
+
+No, these values dont match at all.
+
+
+```{r}
+mercury %>% 
+  t_test(total_mercury ~ fisherman, order = c(1, 0), var.equal = TRUE)
+```
+
+```{r}
+df <- 10
+ggplot(data.frame(x = c(-4, 4)), aes(x)) + 
+  stat_function(fun = dt, args = list(df = df)) + # t dist
+  stat_function(fun = dnorm, lty = 3, color = "red") # normal dist in red
+```
+

@@ -1,0 +1,178 @@
+---
+title: "iLab 4 - Assesment"
+author: "Eric Stevens"
+date: "12/13/2018"
+output: html_document
+---
+
+
+## Logistics
+
+```{r}
+library(tidyverse)
+library(moderndive)
+library(broom)
+library(infer)
+library(multcomp) # for post-hoc tests
+library(ggbeeswarm)
+library(car) # for Anova 
+library(phia) # for post-hoc tests
+library(skimr)
+select <- dplyr::select # deals with the namespace conflict
+```
+
+## Data
+
+```{r}
+or_vitd <- read_csv("http://bit.ly/conj620-orvitdcsv",
+                    col_types = cols(
+                      season = col_factor(levels = NULL),
+                      patient_type = col_factor(levels = NULL),
+                      region = col_factor(levels = NULL)))
+```
+
+
+## EDA
+
+First lets have a glimpse of the raw data.
+```{r}
+glimpse(or_vitd)
+or_vitd
+
+```
+
+
+
+
+ We first make a visualization of the seperated categories, we then use group to split the two in the dataframe and push it through skim to to see the numbers of each group, their means, and standard deviations of them individually.
+
+```{r}
+ggplot(data=or_vitd, aes(vitamin_d, fill=patient_type)) + 
+  geom_histogram(bins = 20)
+
+or_vitd %>% group_by(patient_type) %>% skim()
+```
+
+Above we can confirm that there are 88 IME cases labeled in the summary as CAS, whis is short for CASE whis is there factorial designation in the data. There are also 445 CON, short for CONTROL.
+The CASE group has a mean of 27.03 and a standard deviation of 10.93. The CONTROL group has a mean of 27.59 and a standard deviation of 11.18.
+
+## Comparing Means
+
+```{r}
+ggplot(or_vitd, aes(x=season, y = vitamin_d, color=patient_type,alpha = .2)) +
+  stat_summary(fun.data = mean_cl_boot)
+```
+
+The null hypothisis is that the case group and control group have the same mean. 
+The alternavive hypothisis is that they differ in sensitivity to season.
+
+a. There are obviously main effects of season. there does not appear to be a main effect of patient type.
+
+b. There appears to be a strong interaction effect between season and patient type. The magnitude of variation in vitd levels from season to season seems to be directly related to the patient type.
+
+
+## Two Way Ancova
+
+```{r}
+
+# patient only
+vitd_patient <- lm(vitamin_d ~ patient_type + season, data = or_vitd)
+anova(vitd_patient)
+
+# season only
+vitd_season <- lm(vitamin_d ~ season + patient_type, data = or_vitd)
+anova(vitd_season)
+
+# patient + season
+vitd_patient <- lm(vitamin_d ~ patient_type + season, data = or_vitd)
+anova(vitd_patient)
+
+# season + patient
+vitd_season <- lm(vitamin_d ~ season + patient_type, data = or_vitd)
+anova(vitd_season)
+
+
+```
+
+
+## Two Way ANCOVA with Type II SS
+
+```{r}
+vitd_add <- lm(vitamin_d ~ season + patient_type, data = or_vitd)
+Anova(vitd_add, type = 2)
+
+vitd_add <- lm(vitamin_d ~ patient_type + season, data = or_vitd)
+Anova(vitd_add, type = 2)
+```
+
+They are the same.
+
+We can reject the hypothesis that season has no effect on the means.
+
+```{r}
+library(phia)
+
+plot(vitd_add, 1:2)
+```
+
+
+
+
+
+
+
+
+
+```{r}
+vitd_add_means <- interactionMeans(vitd_add)
+plot(vitd_add_means)
+```
+
+
+<span style="color:deeppink">  This section should have had the title on it. It is actually the Anova with the interaction </span>
+
+<h2 style="color:deeppink">Two-way ANOVA with Type II SS</h2>
+
+```{r}
+vitd_times <- lm(vitamin_d ~ season * patient_type, data = or_vitd)
+Anova(vitd_times, type = 2)
+
+vitd_times_means <- interactionMeans(vitd_times)
+plot(vitd_times_means)
+
+#testInteractions(lm_model, pairwise = "variable_name", adjustment = "p.adjust.method")
+```
+
+<span style="color:deeppink"> Here I had ran out of time to complete the initial assignment. The following I am completing for the assesment. 
+
+In the ANOVA above the table shows that the only signifigant factor was the season. This effect is visable in the slope difference in the graph. In this graph we have lines of different slopes. That is because in this graph we are looking at an interaction which allows for the lines to take on different slops. These lines track the effects of the predictor variables individually, instead of just showing the main effect. 
+
+## Final two-way ANOVA
+
+
+
+```{r}
+vitd_times <- lm(vitamin_d ~ season * region, data = or_vitd)
+Anova(vitd_times, type = 2)
+
+vitd_times_means <- interactionMeans(vitd_times)
+plot(vitd_times_means)
+
+#testInteractions(lm_model, pairwise = "variable_name", adjustment = "p.adjust.method")
+```
+Again we see that the season is the signifigant predictor. North and south seem to be less important than east and west. Also it appears that the in the NE season does not seem to have an effect. 
+
+
+
+```{r}
+testInteractions(vitd_times, pairwise = "region", adjustment = "bonferroni")
+```
+```{r}
+testInteractions(vitd_times, pairwise = "region", fixed = "season", adjustment = "bonferroni")
+```
+Above two blocks taken form solution.
+</span>
+
+
+
+

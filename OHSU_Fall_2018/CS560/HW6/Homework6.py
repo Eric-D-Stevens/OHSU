@@ -126,7 +126,7 @@ def prove(kb, query):
 
     #PrettyConsequence(consequence)
 
-    # loop 
+    # loop
     while 1:
 
         temp_set = [] # new resolutions before adding to consequence

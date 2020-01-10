@@ -1,0 +1,60 @@
+---
+title: "Homework 3"
+author: "Eric Stevens"
+date: "November 13, 2018"
+output: html_notebook
+---
+
+
+## Question 1
+
+```{r}
+bones <- data.frame(mother=1:10,
+bf=c(1928, 2549, 2825, 1924, 1628, 2175, 2114, 2621, 1843, 2541),
+pw=c(2126, 2885, 2895, 1942, 1750, 2184, 2164, 2626, 2006, 2627))
+```
+
+
+#### a) Null and alternative hypotheses:
+
+$$H_0 :  \mu_{pw} - \mu_{bf} = 25$$
+$$H_a : \mu_{pw} - \mu_{bf} > 25$$
+
+#### b) The wrong test:
+
+```{r}
+# Remember, the two-sample test is inappropriate.
+t.test(bones$pw, bones$bf, mu=25, alternative="greater", var.equal = TRUE)
+```
+Since $p>\alpha$ we cannot reject $H_0$, and therefore cannot conclude that 
+it is highly unlikely that the observed statistics would occour if the $H_0$ 
+was true.
+
+
+#### c) The right test:
+```{r}
+# this is the right test
+t.test(bones$pw, bones$bf, mu=25, paired = TRUE, alternative="greater")
+```
+Yes there is a signifigant difference in the result. Since $p<\alpha$, we 
+can reject $H_0$, and conclude that it would be very unlikely to observe 
+what we have if $H_0$ were true. The degree of freedom has been restricted 
+compared to the two sample test because in this situation we are evaluating 
+the mean difference in bone mass of individual mothers from brest feeding to
+post weaning, where as in the two sample test we are evaluating the difference
+in mean of the bresast feeding group as a whole and the post weaning group 
+as a whole.
+
+## Question 2
+
+* a. She rejected her null hypothesis.
+* b. The t-statistic based on her sample was greater than 2.01.
+* c. The p value for her t-statistic was less than her α-level.
+* e. Her sample mean of X was 9.664.
+
+
+# Question 3
+
+95% confident that the population mean falls between 0.99523 and 1.00077.
+
+

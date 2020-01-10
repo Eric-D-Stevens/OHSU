@@ -1,0 +1,33 @@
+node(1). node(2). node(3). node(4). node(5). node(6).
+node(7). node(8). node(9). node(10). node(11). node(12).
+node(13). node(14). node(15).
+c(1,2). c(1,3). c(1,5). c(1,7). c(1,8). c(1,11).
+c(2,4). c(2,8). c(2,12). c(3,5). c(3,7). c(3,11).
+c(4,6). c(5,7). c(5,11). c(6,8). c(7,11). c(8,11).
+c(9,12). c(10,12). c(13,14). c(13,15). c(14,15).
+
+%c(X,Y) :- c(Y,X).
+
+
+connected(Node, [X]) :-
+	c(Node,X).
+
+connected(Node,[First|Rest]) :-
+	c(Node,First),
+	connected(Node,Rest).
+
+
+
+clique(1,[X]) :-
+	node(X).
+
+clique(N,NewList):-
+	Nminus is N-1,
+	clique(Nminus,List),
+	node(Node),
+	not(member(Node,List)),
+	connected(Node,List),
+	NewList = [Node|List].
+
+
+

@@ -1,0 +1,930 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Lab2\_notebook}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{ee-580-lab-2}{%
+\section{EE 580 Lab 2}\label{ee-580-lab-2}}
+
+\hypertarget{eric-d.-stevens}{%
+\subsubsection{Eric D. Stevens}\label{eric-d.-stevens}}
+
+\hypertarget{february-21-2019}{%
+\subsubsection{February 21, 2019}\label{february-21-2019}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{o}{\PYZpc{}}\PY{k}{matplotlib} notebook
+        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} nbagg
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        \PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{fftpack} \PY{k}{import} \PY{n}{fft}\PY{p}{,} \PY{n}{ifft}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{from} \PY{n+nn}{mpl\PYZus{}toolkits}\PY{n+nn}{.}\PY{n+nn}{mplot3d} \PY{k}{import} \PY{n}{Axes3D}
+\end{Verbatim}
+
+
+    \hypertarget{part-1.}{%
+\subsection{Part 1.}\label{part-1.}}
+
+\hypertarget{n}{%
+\subsubsection{\texorpdfstring{1. \$ \delta(n)
+\$}{1. \$ (n) \$}}\label{n}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{signal} \PY{k}{import} \PY{n}{unit\PYZus{}impulse}
+        
+        \PY{c+c1}{\PYZsh{} build the time domain axis}
+        \PY{n}{time\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{10}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} generate the time domain signal}
+        \PY{n}{x\PYZus{}n} \PY{o}{=} \PY{n}{unit\PYZus{}impulse}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{time\PYZus{}axis}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} plot the time domain signal}
+        \PY{n}{time\PYZus{}plot}\PY{p}{(}\PY{n}{x\PYZus{}n}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} build the frequency domain axis}
+        \PY{n}{freq\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{time\PYZus{}axis}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} get the FFT of the time domain signal }
+        \PY{n}{X\PYZus{}K} \PY{o}{=} \PY{n}{fft}\PY{p}{(}\PY{n}{x\PYZus{}n}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} plot the frequency domain signal (magnitude and phase, see utilities)}
+        \PY{n}{mag\PYZus{}phase\PYZus{}plot}\PY{p}{(}\PY{n}{X\PYZus{}K}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{freq\PYZus{}axis}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/ipykernel\_launcher.py:19: ComplexWarning: Casting complex values to real discards the imaginary part
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \hypertarget{deltan-5}{%
+\subsubsection{\texorpdfstring{2.
+\(\delta(n-5)\)}{2. \textbackslash{}delta(n-5)}}\label{deltan-5}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{signal} \PY{k}{import} \PY{n}{unit\PYZus{}impulse}
+        
+        \PY{c+c1}{\PYZsh{} build the time domain axis}
+        \PY{n}{time\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{10}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} generate the time domain signal, shift delta by 5}
+        \PY{n}{x\PYZus{}n} \PY{o}{=} \PY{n}{unit\PYZus{}impulse}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{time\PYZus{}axis}\PY{p}{)}\PY{p}{,} \PY{n}{idx}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} plot the time domain signal}
+        \PY{n}{time\PYZus{}plot}\PY{p}{(}\PY{n}{x\PYZus{}n}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} build the frequency domain axis}
+        \PY{n}{freq\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{time\PYZus{}axis}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} get the FFT of the time domain signal }
+        \PY{n}{X\PYZus{}K} \PY{o}{=} \PY{n}{fft}\PY{p}{(}\PY{n}{x\PYZus{}n}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} plot the frequency domain signal (magnitude and phase, see utilities)}
+        \PY{n}{mag\PYZus{}phase\PYZus{}plot}\PY{p}{(}\PY{n}{X\PYZus{}K}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{freq\PYZus{}axis}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/ipykernel\_launcher.py:19: ComplexWarning: Casting complex values to real discards the imaginary part
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \hypertarget{un}{%
+\subsubsection{\texorpdfstring{3. \(u(n)\)}{3. u(n)}}\label{un}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{\PYZsh{} build the time domain axis}
+        \PY{n}{time\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{10}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} generate the time domain signal, shift delta by 5}
+        \PY{n}{x\PYZus{}n} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones\PYZus{}like}\PY{p}{(}\PY{n}{time\PYZus{}axis}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} plot the time domain signal}
+        \PY{n}{time\PYZus{}plot}\PY{p}{(}\PY{n}{x\PYZus{}n}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} build the frequency domain axis}
+        \PY{n}{freq\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{time\PYZus{}axis}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} get the FFT of the time domain signal }
+        \PY{n}{X\PYZus{}K} \PY{o}{=} \PY{n}{fft}\PY{p}{(}\PY{n}{x\PYZus{}n}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} plot the frequency domain signal (magnitude and phase, see utilities)}
+        \PY{n}{mag\PYZus{}phase\PYZus{}plot}\PY{p}{(}\PY{n}{X\PYZus{}K}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{freq\PYZus{}axis}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/ipykernel\_launcher.py:17: ComplexWarning: Casting complex values to real discards the imaginary part
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \hypertarget{cos2pi20hzn}{%
+\subsubsection{\texorpdfstring{4.
+\(2cos(2\pi*20Hz*n)\)}{4. 2cos(2\textbackslash{}pi*20Hz*n)}}\label{cos2pi20hzn}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{c+c1}{\PYZsh{} build the time domain axis}
+         \PY{n}{time\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{10}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} declare sampling frequency and cycles/sec of sinusoid}
+         \PY{n}{fs} \PY{o}{=} \PY{l+m+mi}{1000}
+         \PY{n}{hz} \PY{o}{=} \PY{l+m+mi}{20}
+         
+         \PY{c+c1}{\PYZsh{} build radians axis}
+         \PY{n}{rads\PYZus{}axis} \PY{o}{=} \PY{n}{time\PYZus{}axis}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{o}{*}\PY{p}{(}\PY{n+nb}{float}\PY{p}{(}\PY{n}{hz}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n}{fs}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} generate the time domain signal, cosine based on radian axis}
+         \PY{n}{x\PYZus{}n} \PY{o}{=} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{rads\PYZus{}axis}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} plot the time domain signal}
+         \PY{n}{time\PYZus{}plot}\PY{p}{(}\PY{n}{x\PYZus{}n}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} build the frequency domain axis}
+         \PY{n}{freq\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{time\PYZus{}axis}\PY{p}{)}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} get the FFT of the time domain signal }
+         \PY{n}{X\PYZus{}K} \PY{o}{=} \PY{n}{fft}\PY{p}{(}\PY{n}{x\PYZus{}n}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} plot the frequency domain signal (magnitude and phase, see utilities)}
+         \PY{n}{mag\PYZus{}phase\PYZus{}plot}\PY{p}{(}\PY{n}{X\PYZus{}K}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{freq\PYZus{}axis}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/ipykernel\_launcher.py:24: ComplexWarning: Casting complex values to real discards the imaginary part
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \hypertarget{cos210hzn-2cos220hzn-cos240hzn-0.5cos280hzn}{%
+\subsubsection{\texorpdfstring{5. \$ 4cos(2\pi*10Hz\emph{n) +
+2cos(2\pi*20Hz}n) + cos(2\pi*40Hz\emph{n) + 0.5cos(2\pi*80Hz}n)
+\$}{5. \$ 4cos(210Hzn) + 2cos(220Hzn) + cos(240Hzn) + 0.5cos(280Hzn) \$}}\label{cos210hzn-2cos220hzn-cos240hzn-0.5cos280hzn}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{c+c1}{\PYZsh{} build the time domain axis}
+         \PY{n}{time\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{10}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} declare sampling frequency and cycles/sec of sinusoid}
+         \PY{n}{fs} \PY{o}{=} \PY{l+m+mi}{1000}
+         
+         \PY{n}{hz1} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{hz2} \PY{o}{=} \PY{l+m+mi}{20}
+         \PY{n}{hz3} \PY{o}{=} \PY{l+m+mi}{40}
+         \PY{n}{hz4} \PY{o}{=} \PY{l+m+mi}{80}
+         
+         \PY{c+c1}{\PYZsh{} build radians axis}
+         \PY{n}{rads\PYZus{}axis1} \PY{o}{=} \PY{n}{time\PYZus{}axis}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{o}{*}\PY{p}{(}\PY{n+nb}{float}\PY{p}{(}\PY{n}{hz1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n}{fs}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{rads\PYZus{}axis2} \PY{o}{=} \PY{n}{time\PYZus{}axis}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{o}{*}\PY{p}{(}\PY{n+nb}{float}\PY{p}{(}\PY{n}{hz2}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n}{fs}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{rads\PYZus{}axis3} \PY{o}{=} \PY{n}{time\PYZus{}axis}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{o}{*}\PY{p}{(}\PY{n+nb}{float}\PY{p}{(}\PY{n}{hz3}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n}{fs}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{rads\PYZus{}axis4} \PY{o}{=} \PY{n}{time\PYZus{}axis}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{o}{*}\PY{p}{(}\PY{n+nb}{float}\PY{p}{(}\PY{n}{hz4}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n}{fs}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} generate the time domain signal, cosine based on radian axis}
+         \PY{n}{x\PYZus{}n} \PY{o}{=} \PY{l+m+mi}{4}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{rads\PYZus{}axis1}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{rads\PYZus{}axis2}\PY{p}{)}\PY{o}{+}\PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{rads\PYZus{}axis3}\PY{p}{)}\PY{o}{+}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{rads\PYZus{}axis4}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} plot the time domain signal}
+         \PY{n}{time\PYZus{}plot}\PY{p}{(}\PY{n}{x\PYZus{}n}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} build the frequency domain axis}
+         \PY{n}{freq\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{time\PYZus{}axis}\PY{p}{)}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} get the FFT of the time domain signal }
+         \PY{n}{X\PYZus{}K} \PY{o}{=} \PY{n}{fft}\PY{p}{(}\PY{n}{x\PYZus{}n}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} plot the frequency domain signal (magnitude and phase, see utilities)}
+         \PY{n}{mag\PYZus{}phase\PYZus{}plot}\PY{p}{(}\PY{n}{X\PYZus{}K}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{freq\PYZus{}axis}\PY{p}{,} \PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/ipykernel\_launcher.py:31: ComplexWarning: Casting complex values to real discards the imaginary part
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \hypertarget{part-2}{%
+\subsection{Part 2}\label{part-2}}
+
+    Step on is to convert the text file into a numerical array.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{project2\PYZus{}data\PYZus{}csv.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{file}\PY{p}{:}
+             \PY{n}{file\PYZus{}string} \PY{o}{=} \PY{n}{file}\PY{o}{.}\PY{n}{read}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{values} \PY{o}{=} \PY{n}{file\PYZus{}string}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{float\PYZus{}values} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+         \PY{k}{for} \PY{n}{string} \PY{o+ow}{in} \PY{n}{values}\PY{p}{:}
+             \PY{k}{try}\PY{p}{:}
+                 \PY{n}{float\PYZus{}values}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{float}\PY{p}{(}\PY{n}{string}\PY{p}{)}\PY{p}{)}
+             \PY{k}{except}\PY{p}{:}
+                 \PY{k}{continue}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{float\PYZus{}values}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}39}]:} [<matplotlib.lines.Line2D at 0x10b52bda0>]
+\end{Verbatim}
+            
+    Lets now take our time signal and devide it into 10 second windows.
+Since our sampling frequency is 125 Hz we will be breaking up this
+entire signal into windows of 1250 samples and storing them.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}61}]:} \PY{n}{fs} \PY{o}{=} \PY{l+m+mi}{125} \PY{c+c1}{\PYZsh{} samples/second}
+         \PY{n}{w} \PY{o}{=} \PY{l+m+mi}{10} \PY{c+c1}{\PYZsh{} seconds}
+         \PY{n}{time\PYZus{}windows} \PY{o}{=} \PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{float\PYZus{}values}\PY{p}{[}\PY{n}{i}\PY{o}{*}\PY{p}{(}\PY{n}{fs}\PY{o}{*}\PY{n}{w}\PY{p}{)}\PY{p}{:}\PY{p}{(}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{fs}\PY{o}{*}\PY{n}{w}\PY{p}{)}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{float\PYZus{}values}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{fs}\PY{o}{*}\PY{n}{w}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+
+
+    Lets ensure that we have got the intended results. A 10 secon window of
+blood preassure readings. We will randomly select a single window from
+within our \texttt{time\_windows{[}{]}} array and see if it matches
+reasonable expectations.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}115}]:} \PY{n}{time\PYZus{}plot}\PY{p}{(}\PY{n}{time\PYZus{}windows}\PY{p}{[}\PY{l+m+mi}{303}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    This 10 second frame contains 16 peaks, which corrisponds to a an
+estimated heart rate of 96 bpm. High, but not unreasonable for a child.
+Lets now do some fourier domain analysis. We will create a new
+multi-dimentional array that takes the fft of each of the windows in our
+current windowing array.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}58}]:} \PY{n}{freq\PYZus{}windows} \PY{o}{=} \PY{p}{[}\PY{n}{fft}\PY{p}{(}\PY{n}{window}\PY{p}{)} \PY{k}{for} \PY{n}{window} \PY{o+ow}{in} \PY{n}{time\PYZus{}windows}\PY{p}{]}
+\end{Verbatim}
+
+
+    Now lets examine a frequency window magnitude plot to ensure our
+operation matches the results above.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}60}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{l+m+mi}{101}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{freq\PYZus{}windows}\PY{p}{[}\PY{l+m+mi}{333}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}60}]:} [<matplotlib.lines.Line2D at 0x1335604a8>]
+\end{Verbatim}
+            
+    While on zooming in we can see that our plot is probably correct, the
+first view of the plot is overwhelmed by the DC component and also gives
+us much more information than we actually need, making interpretation
+difficult. We can get rid of the dc component of our signals by
+normalizing the time windows as they come in. Lets alter our equations
+to remove the dc component of the signal. Lets also add an x axis to the
+frequency chat that shows the proper frequencies in beats per minuite.
+Since we are currently evaluating only 10 seconds, we can achieve this
+by multiplying the sample indicies by six.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}83}]:} \PY{c+c1}{\PYZsh{} normalize windows before taking fft}
+         \PY{n}{freq\PYZus{}windows\PYZus{}normed} \PY{o}{=} \PY{p}{[}\PY{n}{fft}\PY{p}{(}\PY{n}{window} \PY{o}{\PYZhy{}} \PY{p}{(}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{window}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{window}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{window} \PY{o+ow}{in} \PY{n}{time\PYZus{}windows}\PY{p}{]}
+         
+         \PY{c+c1}{\PYZsh{} create x axis that corrisponds to bpm}
+         \PY{n}{bpm\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{freq\PYZus{}windows\PYZus{}normed}\PY{p}{[}\PY{l+m+mi}{333}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{6}
+         
+         \PY{c+c1}{\PYZsh{} plot}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{l+m+mi}{107}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{bpm\PYZus{}axis}\PY{p}{,} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{freq\PYZus{}windows\PYZus{}normed}\PY{p}{[}\PY{l+m+mi}{333}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}83}]:} [<matplotlib.lines.Line2D at 0x1310ebf28>]
+\end{Verbatim}
+            
+    Now we have we have the normalized frequency components on a proper
+axis, but we still have much more information than we need. Since there
+is virtually no information above 1000 bpm lets only look at the part of
+the signal below that. Since our axis is currently 6 bpm/sample we need
+to take the first 1000 bpm / 6 samples from the arrays,
+\textasciitilde{}167 samples.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}114}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{l+m+mi}{108}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{bpm\PYZus{}axis}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{167}\PY{p}{]}\PY{p}{,} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{freq\PYZus{}windows\PYZus{}normed}\PY{p}{[}\PY{l+m+mi}{303}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{167}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}114}]:} [<matplotlib.lines.Line2D at 0x15e72b470>]
+\end{Verbatim}
+            
+    Now we can see in much better detail what is going on. The fundemental
+frequency appears to be around 100 bpm. This matches our observation in
+the time domain of 16 cycles in 10 seconds. Now that we have found the
+right way to view our data we can view it across the time scale. Lets
+create a 3d plot that will map the freqency domain and the time domain.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}111}]:} \PY{c+c1}{\PYZsh{} isolate the freq domain to 1000 bpm max}
+          \PY{n}{bpm\PYZus{}iso\PYZus{}axis} \PY{o}{=} \PY{n}{bpm\PYZus{}axis}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{167}\PY{p}{]}
+          \PY{n}{freq\PYZus{}windows\PYZus{}iso} \PY{o}{=} \PY{p}{[}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{window}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{167}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{window} \PY{o+ow}{in} \PY{n}{freq\PYZus{}windows\PYZus{}normed}\PY{p}{]}
+          
+          \PY{c+c1}{\PYZsh{} create a time axis}
+          \PY{n}{t\PYZus{}axis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{freq\PYZus{}windows\PYZus{}iso}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{10}
+          
+          \PY{c+c1}{\PYZsh{} make xy mesh for 3d plot}
+          \PY{n}{x}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{meshgrid}\PY{p}{(}\PY{n}{t\PYZus{}axis}\PY{p}{,} \PY{n}{bpm\PYZus{}iso\PYZus{}axis}\PY{p}{)}
+          
+          \PY{c+c1}{\PYZsh{} generate 3d plot}
+          \PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k}{import} \PY{n}{cm}
+          \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+          \PY{n}{ax} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{n}{projection}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{3d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time(seconds)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency(bpm)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{surf} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{plot\PYZus{}surface}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{freq\PYZus{}windows\PYZus{}iso}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{cm}\PY{o}{.}\PY{n}{coolwarm}\PY{p}{,}
+                                 \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{antialiased}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    From this we can see that all through the timespan, our frequency
+components remain fairly consistent. Clear patterns emerge, whit a
+fundemental frequency around 100 bpm, and many lower magnitude
+harmonics. While much of the variation in the signal is slight towards
+the end of time signal there are some extremly strong low fewquency
+components of the signal that were not removed with normalization. This
+implies that they are not dc components and should probably not be
+ignored. I think the best way to move forward isolating the heart rate
+is to grab the maximum amplitude frequency component from each time
+stamp. Lets examine our results after doing this.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}110}]:} \PY{n}{hr} \PY{o}{=} \PY{p}{[}\PY{n}{bpm\PYZus{}iso\PYZus{}axis}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{window}\PY{p}{)}\PY{p}{]} \PY{k}{for} \PY{n}{window} \PY{o+ow}{in} \PY{n}{freq\PYZus{}windows\PYZus{}iso}\PY{p}{]}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{l+m+mi}{123}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{hr}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}110}]:} [<matplotlib.lines.Line2D at 0x1889d8ef0>]
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}108}]:} \PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}108}]:} 4
+\end{Verbatim}
+            
+    \hypertarget{utilities}{%
+\subsection{Utilities}\label{utilities}}
+
+\hypertarget{plotting-functions}{%
+\subsubsection{Plotting functions}\label{plotting-functions}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}50}]:} \PY{k}{def} \PY{n+nf}{mag\PYZus{}phase\PYZus{}plot}\PY{p}{(}\PY{n}{H\PYZus{}w}\PY{p}{,} \PY{n}{axis}\PY{p}{,} \PY{n}{seperate}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+         
+             \PY{n}{mag} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{H\PYZus{}w}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{phase} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{angle}\PY{p}{(}\PY{n}{H\PYZus{}w}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{float32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             
+             \PY{n}{fig}\PY{p}{,} \PY{n}{ax1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+             \PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{axis}\PY{p}{,} \PY{n}{mag}\PY{p}{)}
+             \PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{c+c1}{\PYZsh{} Make the y\PYZhy{}axis label, ticks and tick labels match the line color.}
+             \PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Magnitude |H(w)|}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{ax1}\PY{o}{.}\PY{n}{tick\PYZus{}params}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{colors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+             \PY{k}{if} \PY{o+ow}{not} \PY{n}{seperate}\PY{p}{:}
+                 \PY{n}{ax2} \PY{o}{=} \PY{n}{ax1}\PY{o}{.}\PY{n}{twinx}\PY{p}{(}\PY{p}{)}
+                 \PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{axis}\PY{p}{,} \PY{n}{phase}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Phase \PYZlt{}H(w)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n}{ax2}\PY{o}{.}\PY{n}{tick\PYZus{}params}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{colors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+                 \PY{n}{fig}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+                 
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+             
+             \PY{k}{if} \PY{n}{seperate}\PY{p}{:}
+                 \PY{n}{fig}\PY{p}{,} \PY{n}{ax1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+                 \PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{axis}\PY{p}{,} \PY{n}{phase}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Phase \PYZlt{}H(w)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n}{ax1}\PY{o}{.}\PY{n}{tick\PYZus{}params}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{colors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n}{fig}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+                 \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+                 
+         \PY{k}{def} \PY{n+nf}{time\PYZus{}plot}\PY{p}{(}\PY{n}{mag}\PY{p}{)}\PY{p}{:}
+         
+             \PY{n}{fig}\PY{p}{,} \PY{n}{ax1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+             \PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{mag}\PY{p}{)}
+             \PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time (samples)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{c+c1}{\PYZsh{} Make the y\PYZhy{}axis label, ticks and tick labels match the line color.}
+             \PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Magnitude |h(n)|}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{ax1}\PY{o}{.}\PY{n}{tick\PYZus{}params}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{colors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+             \PY{n}{fig}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

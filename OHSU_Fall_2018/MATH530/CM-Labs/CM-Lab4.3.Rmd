@@ -1,0 +1,155 @@
+---
+title: "CM Lab 4.3"
+author: Eric Stevens
+date: November 8, 2018
+output: html_notebook
+---
+
+## Packages
+```{r}
+library(tidyverse)
+library(infer)
+library(skimr)
+```
+
+## Introduction
+
+Declare dataset:
+```{r}
+stars <- c(84, 57, 63, 99, 72, 46, 76, 91, rep(NA, 4))
+plain <- c(81, 74, 56, 69, 66, 62, 69, 61, 87, 65, 44, 69)
+
+sneetches <- data.frame(stars, plain)
+sneetches_tidy <- sneetches %>%
+  gather(group, SSI, factor_key = TRUE) %>%
+  filter(!is.na(SSI))
+sneetches_tidy
+```
+
+Plot distruibution of SSI for type:
+```{r}
+sneetch_plot <- ggplot(sneetches_tidy, aes(x = group, 
+                                           y = SSI)) + 
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(position = position_jitter(height = 0, width = 0.2), 
+              fill = "lightseagreen", 
+              colour = "lightseagreen", 
+              alpha = 0.75, 
+              size = 4, 
+              na.rm=TRUE)
+suppressWarnings(print(sneetch_plot))
+```
+
+## Observe effect of $\delta*$
+```{r}
+mean_diff <- sneetches_tidy %>%
+  specify(SSI ~ group) %>%
+  calculate(stat = "diff in means", 
+            order = c("stars", "plain")) 
+mean_diff
+
+```
+
+## Reshuffling 
+```{r}
+set.seed(2018)
+sn1 <- sneetches_tidy %>% 
+  specify(SSI ~ group) %>% 
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1, type = "permute")
+sn1
+```
+```{r}
+skim_with(numeric = list(hist = NULL))
+
+# original mean
+skim(sneetches_tidy)
+```
+```{r}
+# original means by group
+sneetches_tidy %>% 
+  group_by(group) %>% 
+  skim()
+```
+```{r}
+# resample mean
+skim(sn1)
+```
+```{r}
+# resampled means by group
+sn1 %>% 
+  group_by(group) %>% 
+  skim()
+```
+```{r}
+choose(20, 8)
+```
+
+
+## Distribution of $\delta$ under $H_0$
+
+```{r}
+set.seed(1980)
+null_distn <- sneetches_tidy %>% 
+  specify(SSI ~ group) %>% 
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in means", 
+            order = c("stars", "plain"))
+```
+
+```{r}
+null_distn %>% 
+  visualize()
+```
+
+## The p-value
+```{r}
+null_distn %>% 
+  visualize(obs_stat = mean_diff, direction = "greater")
+```
+
+```{r}
+mean_diff_number <- mean_diff %>% 
+  pull(1)
+
+(pvalue <- null_distn %>%
+  get_pvalue(obs_stat = mean_diff, direction = "greater"))
+```
+```{r}
+# same as...
+null_distn %>% 
+  count(val = stat >= mean_diff_number) 
+```
+
+## Corresponding confidence interval
+```{r}
+null_distn <- sneetches_tidy %>% 
+  specify(SSI ~ group) %>% 
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in means", 
+            order = c("stars", "plain"))
+```
+
+```{r}
+boot_sneetch <- sneetches_tidy %>% 
+  specify(SSI ~ group) %>% 
+  #hypothesize(null = "independence") %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "diff in means", 
+            order = c("stars", "plain"))
+
+boot_sneetch_ci <- boot_sneetch %>% 
+  get_ci()
+
+#see ci
+null_distn %>% 
+  visualize(endpoints = boot_sneetch_ci,
+            endpoints_color = "blue",
+            ci_fill = "transparent",
+            alpha = 0.2,
+            direction = "between") #+
+```
+
+

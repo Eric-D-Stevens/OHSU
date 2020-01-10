@@ -1,0 +1,8 @@
+The languages have different performances because some
+combinations of characters are more common among different
+languages than in others the Spanish and Italian languages
+are similar and therefore it is statistically more difficult
+to distinguish which one as which. Some languages are very
+unique compared to others. The characters in German are only
+in German. Therefore its very easy to distinguish German
+just due to the characters. 

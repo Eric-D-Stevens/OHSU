@@ -1,0 +1,316 @@
+---
+title: "MTH 530: Homework 2"
+author: "Eric Stevens"
+date: "November 1, 2018"
+output: html_notebook
+---
+```{r }
+library(tidyverse)
+```
+
+
+
+### Question 1:
+
+#### a)
+<div class="row" style="padding:50px">
+<table style="width:50%">
+  <tr>
+    <th>Coin 1</th>
+    <th>Coin 2</th> 
+    <th>Coin 3</th>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Heads</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Heads</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Tails</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Tails</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Heads</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Heads</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Tails</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Tails</td> 
+    <td>Tails</td>
+  </tr>
+</table>
+</div>
+
+#### b)
+1. $A = at-least-two-heads$
+<div class="row" style="padding:50px">
+<table style="width:50%">
+  <tr>
+    <th>Coin 1</th>
+    <th>Coin 2</th> 
+    <th>Coin 3</th>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Heads</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Heads</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Tails</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Heads</td> 
+    <td>Heads</td>
+  </tr>
+  </tr>
+</table>
+</div>
+
+2. $B = First-two-coins-are-heads$
+<div class="row" style="padding:50px">
+<table style="width:50%">
+  <tr>
+    <th>Coin 1</th>
+    <th>Coin 2</th> 
+    <th>Coin 3</th>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Heads</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Heads</td> 
+    <td>Tails</td>
+  </tr>
+</table>
+</div>
+
+2. $C = Last-coin-is-tails$
+<div class="row" style="padding:50px">
+<table style="width:50%">
+  <tr>
+    <th>Coin 1</th>
+    <th>Coin 2</th> 
+    <th>Coin 3</th>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Heads</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Tails</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Heads</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Tails</td> 
+    <td>Tails</td>
+  </tr>
+</table>
+</div>
+
+#### C)
+1. $A' = at-least-two-heads'$
+<div class="row" style="padding:50px">
+<table style="width:50%">
+  <tr>
+    <th>Coin 1</th>
+    <th>Coin 2</th> 
+    <th>Coin 3</th>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Tails</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Heads</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Tails</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Tails</td> 
+    <td>Tails</td>
+  </tr>
+  </tr>
+</table>
+</div>
+
+2. $A \bigcap B$
+<div class="row" style="padding:50px">
+<table style="width:50%">
+  <tr>
+    <th>Coin 1</th>
+    <th>Coin 2</th> 
+    <th>Coin 3</th>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Heads</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Heads</td> 
+    <td>Tails</td>
+  </tr>
+</table>
+</div>
+
+3. $A \bigcup C$
+<div class="row" style="padding:50px">
+<table style="width:50%">
+  <tr>
+    <th>Coin 1</th>
+    <th>Coin 2</th> 
+    <th>Coin 3</th>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Heads</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Heads</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Tails</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Heads</td>
+    <td>Tails</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Heads</td> 
+    <td>Heads</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Heads</td> 
+    <td>Tails</td>
+  </tr>
+  <tr>
+    <td>Tails</td>
+    <td>Tails</td> 
+    <td>Tails</td>
+  </tr>
+</table>
+</div>
+
+
+### Question 2
+Let 
+1. $A =$ Drinks Coffee
+2. $B =$ Drinks Tea
+3. $C = A \bigcap B$
+
+#### a) 
+
+People who drink either coffee, tea or both = $(A \bigcup B) = A + B - (A \bigcap B) = 65\% + 50\% - 25\% = 90\%$
+
+#### b)
+People who drink neither = $100\% - A \bigcup B = 100\% - 90\% = 10\%$
+
+### Question 3
+
+#### a)
+```{r}
+library(tibble)
+library(ggplot2)
+x <- as_tibble(rnorm(15)) # draw random sample of size 15 from N(0,1)
+ggplot(x, aes(sample = value)) +
+stat_qq() +
+stat_qq_line()
+
+ggplot(x, aes(x=value)) + geom_histogram()
+```
+
+As we can see from the graph above, the samples general fall near the line. The histogram does not take on any particular shape. 
+
+#### b)
+```{r}
+
+x <- as_tibble(rnorm(30)) # draw random sample of size 15 from N(0,1)
+ggplot(x, aes(sample = value)) +
+stat_qq() +
+stat_qq_line()
+ggplot(x, aes(x=value)) + geom_histogram()
+
+x <- as_tibble(rnorm(60)) # draw random sample of size 15 from N(0,1)
+ggplot(x, aes(sample = value)) +
+stat_qq() +
+stat_qq_line()
+ggplot(x, aes(x=value)) + geom_histogram()
+
+x <- as_tibble(rnorm(100)) # draw random sample of size 15 from N(0,1)
+ggplot(x, aes(sample = value)) +
+stat_qq() +
+stat_qq_line()
+ggplot(x, aes(x=value)) + geom_histogram()
+```
+
+
+#### c)
+
+As we can see from the progression of the graph shapes, the thing that is most apparent is that the smaller the number of samples you use the harder time you will have being able to determine they type of distripution you have. the Q-Q plots seem to do a better job of caputring the normal nature of the distribution of the data than the histogram does. Finally I plot a graph of 10,000 samples to see what a full normal distribution will look like in these two charts.
+
+```{r}
+x <- as_tibble(rnorm(10000)) # draw random sample of size 15 from N(0,1)
+ggplot(x, aes(sample = value)) +
+stat_qq() +
+stat_qq_line()
+ggplot(x, aes(x=value)) + geom_histogram()
+```
+```
+

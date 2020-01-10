@@ -40,9 +40,9 @@ def BLEU(hypothesis, reference, n=MAX_GRAM_SIZE):
 
     out_f_name = hypothesis+'.to.'+reference+'.bleu_scores'
     with open(out_f_name, 'w+') as out_file:
-        out_file.write("--------------- BLEU TRANSLATION SCORE ---------------\n")
+        out_file.write("--------------- BLEU TRANSLATION SCORE ---------------\n\n")
         out_file.write("Candidate file: "+hypothesis+"\n")
-        out_file.write("Reference file: "+reference+"\n")
+        out_file.write("Reference file: "+reference+"\n\n")
 
 
         with open(hypothesis) as cnd:
@@ -93,4 +93,4 @@ def BLEU(hypothesis, reference, n=MAX_GRAM_SIZE):
 
 
                     print('Sentence', sentence, ':', BP*geo_mean)
-                    out_file.write('Sentence'+str(sentence)+':'+str(BP*geo_mean))
+                    out_file.write('Sentence'+str(sentence)+':'+str(BP*geo_mean)+'\n')

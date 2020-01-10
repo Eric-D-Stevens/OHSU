@@ -1,0 +1,182 @@
+---
+title: "CS 530: Midterm"
+output: html_notebook
+author: "Eric Stevens"
+date: "November 20, 2018"
+---
+
+## Free Answer Questions
+
+### 1.
+
+* *a)* In order to find we need to make the integral of the of the PDF over the domain equal to 1 and solve for c. since the PDF evaluates to 0 outside of the range [0,4], we can use the definite integral over this range.
+
+$$\int_{4}^{0} cx dx = 1$$
+$$\frac{c}{2} \left[ x^2\right]_0^4 = 1$$
+
+$$\frac{c}{2} 16 = 1$$
+
+$$ c = \frac{1}{8}$$
+
+* *b)* To get the CDF, we plug the value we obtained for c into the PDF and then take the integral. Again our range is over 0 to 4 but this time we will since it is a CDF, before the range the value will be 0 and after the range the value will be 1. We need three expressions to define this behaviour.
+
+
+$$F(x) = \begin{cases} 0, \hspace{3em}  x \le 0   \\\\ \frac{1}{16}x^2, \hspace{2em} 0 \lt x \lt 4 \\\\ 1, \hspace{3em} x \ge 4 \end{cases}$$
+
+
+* *c)* To get the probability of a range we need the area under the PDF between the ranges. Since the integral of the PDF is the CDF, and we have already calculated the CDF, the area under the PDF in a range can be the CDF of the upper bound minus the CDF of the lower bound.
+
+$$P(1 \lt X \lt 3) = F(3) - F(1)$$
+$$ = \left[\frac{1}{16}x^2\right]_1^3$$
+$$ = \frac{1}{16}\left[(3)^2-(1)^2\right]$$
+$$P(1 \lt X \lt 3) =\frac{1}{2}$$
+
+
+### 2.
+
+* *a)* Acording to the provided website, we can calculate the expectation directly using $\lambda$. Since we have been provided with $\lambda = frac{1}{10}$ we have the expected value.
+
+$$E[X]=\frac{1}{\lambda}$$
+
+$$E[X]=10$$
+
+* *b)* Here we randomly draw 1000 sets of 30 and store each of their means. A histogram just to demonstrate the normal form of the mean. We then count the number of means that are over 12.
+
+
+```{r}
+
+result <- numeric(1000)
+
+for(i in 1:1000){
+  c <- rexp(30, rate = 1/10)
+  result[i] <- mean(c)
+}
+
+yy<-data_frame(result)
+ggplot(yy, aes(x=result))+geom_histogram(bins=20)
+
+yy %>% count(result > 12)
+
+```
+
+* *c)* I cant tell if this is a purposfully tricky question. From what we have see above, if the question is if mean of 12 or higher is unusual, then the answer is that it is not any more unusual than rolling two sixes, since in the above experiment it happened 157 times out of 1000. However, if the question is 'is it unusual for the mean to equal exactly 12' then the answer is that it is virtually impossible. With continuous random variables, the probability of observing any one value is 0 since we cant reach the infinite decimal points we would need to to prove equality. By extension, the means of these sets cant be set to a single value, but rather must be said to exist within a range. This is proven by changing the code snippet above to check for equality instead of being greater than 12.
+
+```{r}
+yy %>% count(result == 12)
+```
+
+### 3.
+
+* *a)* Since her goal is to prove women are getting taller, but there is insufficent evidence to warrent a unidirection hypothisis, the alternative hypothisis would be that the mean heigh of women 10 years ago is different than the mean height of women today.
+
+$$H_a: \mu_{today} - \mu_{ ten-years-ago} \ne 0 $$
+$$H_a: \mu_{today} - 63 \ne 0 $$
+
+* *b)* Now we can negate the alternative hypothisis to get the null.
+
+$$H_0: \mu_{today} -\mu_{ ten-years-ago}=0$$
+$$H_0: \mu_{today}-63 =0$$
+
+* *c)* The numerator for the test statistic should be the sample mean minus the population mean.
+
+$$ \frac{1}{n}\Sigma{_1^n}x_i - \mu_0 $$
+
+$$(64 + 66 + 68 + 60 + 62 + 65 + 66 + 63)/8 - 63$$
+
+$$ 1.25 $$
+* *d)* The standard error is the popluation standard deviation divided by the square root of the sample size.
+
+$$\frac{\sigma_0}{ \sqrt{n}}$$
+
+$$\frac{3}{\sqrt{8}}$$
+
+* *e)* Using a z score table, we can see that the critical values for an alpha value of 0.01 would be a a z score with an absolute value greater than 2.58
+
+* *f)* Calculate the z score:
+
+```{r}
+1.25/(3/sqrt(8))
+```
+
+So we cannot reject $H_0$.
+
+* *g)* Calculate standard deviation of the sample.
+
+```{r}
+samples <- c(64, 66, 68, 60, 62, 65, 66, 63)
+
+sd(samples)
+```
+
+As we can see the standard deviation of the samples is signifigantly less the know population standard deviation.
+
+### 4.
+
+* *a)* 
+
+$$H_0: \mu_{OKC men} - \mu_{men} = 0$$
+$$H_0: \mu_{OKC men} - \mu_{men} \ne 0$$
+
+* *b)*
+
+$$Z = 1.960$$
+
+### 5.
+
+* *a)* +/- 2.200985
+
+* *b)*  +/- 2.860935
+
+* *c)*  +/- 12.7062
+
+* *d)* 1.894577
+
+* *e)* 2.624494
+
+* *f)* 2.008559
+
+
+
+
+
+
+
+
+
+
+## Multiple-Choice Questions
+
+1. d
+2. a
+3. d
+4. a
+5. d
+6. c
+7. e
+8. d
+9. a
+10. c
+11. b
+12. b
+13. d
+14. b
+15. a
+16. c
+17. c
+18. a
+19. d
+20. b
+21. a
+22. a
+23. d
+24. c
+25. a
+26. b
+27. c
+28. b
+29. c
+30. c
+
+
+
+

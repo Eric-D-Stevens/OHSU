@@ -1,0 +1,961 @@
+(TOP
+    (CC and)
+    (PP-LOC
+        (IN at)
+        (NP
+            (DT the)
+            (NNP <NNP>)
+        )
+    )
+    (, ,)
+    (ADVP-TMP
+        (RB meanwhile)
+    )
+    (, ,)
+    (NP-SBJ
+        (JJ new)
+        (NNP <NNP>)
+        (NNP <NNP>)
+        (NNP <NNP>)
+        (NNP <NNP>)
+    )
+    (VP
+        (VBZ has)
+        (VP
+            (VBN said)
+            (SBAR
+                (-NONE- 0)
+                (S
+                    (NP-SBJ
+                        (PRP he)
+                    )
+                    (VP
+                        (VBZ wants)
+                        (S
+                            (NP-SBJ
+                                (DT the)
+                                (CD <CD>)
+                                (NNS sides)
+                            )
+                            (VP
+                                (TO to)
+                                (VP
+                                    (VB hammer)
+                                    (PRT
+                                        (RP out)
+                                    )
+                                    (NP
+                                        (PRP$ their)
+                                        (JJ own)
+                                        (NN plan)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (NP-SBJ
+        (DT the)
+        (CD <CD>)
+        (JJ additional)
+        (NNS defendants)
+    )
+    (VP
+        (VBD were)
+        (RB n't)
+        (NP-PRD
+            (NP
+                (NNS parties)
+            )
+            (PP
+                (TO to)
+                (NP
+                    (DT the)
+                    (NN settlement)
+                )
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (NP-SBJ
+        (NP
+            (DT a)
+            (NN trial)
+        )
+        (PP
+            (IN on)
+            (NP
+                (NP
+                    (JJ criminal)
+                    (NNS allegations)
+                )
+                (PP
+                    (IN against)
+                    (NP
+                        (NP
+                            (DT the)
+                            (NN company)
+                        )
+                        (CC and)
+                        (NP
+                            (DT the)
+                            (JJ same)
+                            (CD <CD>)
+                            (JJ former)
+                            (NNS executives)
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (VP
+        (VBD began)
+        (NP-TMP
+            (NNP <NNP>)
+            (CD <CD>)
+        )
+        (PP-LOC
+            (IN in)
+            (NP
+                (NP
+                    (JJ federal)
+                    (NN court)
+                )
+                (PP
+                    (IN for)
+                    (NP
+                        (NP
+                            (DT the)
+                            (NNP <NNP>)
+                        )
+                        (PP
+                            (IN of)
+                            (NP
+                                (NNP <NNP>)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (NP-SBJ
+        (NP
+            (DT the)
+            (NN company)
+        )
+        (CC and)
+        (NP
+            (PRP$ its)
+            (NNS executives)
+        )
+    )
+    (VP
+        (VBP deny)
+        (NP
+            (DT the)
+            (NNS charges)
+        )
+    )
+    (. .)
+)
+(TOP
+    (NP-SBJ
+        (DT the)
+        (NNP <NNP>)
+        (NNP <NNP>)
+    )
+    (VP
+        (VP
+            (ADVP
+                (RB originally)
+            )
+            (VBD suspended)
+            (NP
+                (DT the)
+                (NN company)
+            )
+            (NP-TMP
+                (NNP <NNP>)
+                (CD <CD>)
+                (, ,)
+                (CD <CD>)
+            )
+        )
+        (, ,)
+        (CC and)
+        (VP
+            (VBZ has)
+            (VP
+                (VBN been)
+                (VP
+                    (VBG renewing)
+                    (NP
+                        (DT the)
+                        (NN ban)
+                    )
+                )
+            )
+        )
+        (ADVP-TMP
+            (RB ever)
+            (IN since)
+        )
+    )
+    (. .)
+)
+(TOP
+    (NP-SBJ
+        (NNP <NNP>)
+        (NNP <NNP>)
+    )
+    (VP
+        (VBD reported)
+        (NP
+            (NP
+                (DT a)
+                (CD <CD>)
+                (NN %)
+                (NN drop)
+            )
+            (PP-LOC
+                (IN in)
+                (NP
+                    (NN third-quarter)
+                    (NN net)
+                    (NN income)
+                )
+            )
+        )
+        (, ,)
+        (PP-PRP
+            (ADVP
+                (RB partly)
+            )
+            (IN because)
+            (IN of)
+            (NP
+                (NP
+                    (DT a)
+                    (JJ one-time)
+                    (NN charge)
+                )
+                (PP
+                    (IN for)
+                    (NP
+                        (VBN discontinued)
+                        (NNS operations)
+                    )
+                )
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (NP-SBJ
+        (NN earning)
+    )
+    (ADVP
+        (RB also)
+    )
+    (VP
+        (VBD fell)
+        (PP-DIR
+            (IN from)
+            (NP
+                (DT the)
+                (JJ year-ago)
+                (NN period)
+            )
+        )
+        (PP-PRP
+            (IN because)
+            (IN of)
+            (NP
+                (VBG slowing)
+                (NN microchip)
+                (NN demand)
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (PP-TMP
+        (IN on)
+        (NP
+            (NNP <NNP>)
+        )
+    )
+    (, ,)
+    (NP-SBJ
+        (NP
+            (NNP <NNP>)
+            (NNP <NNP>)
+        )
+        (, ,)
+        (NP
+            (NNP <NNP>)
+            (NN president)
+            (CC and)
+            (NN chief)
+            (NN executive)
+            (NN officer)
+        )
+        (, ,)
+    )
+    (VP
+        (VBD said)
+        (SBAR
+            (-NONE- 0)
+            (S
+                (`` ``)
+                (NP-SBJ
+                    (NP
+                        (NNP <NNP>)
+                        (POS 's)
+                    )
+                    (NN business)
+                )
+                (VP
+                    (VBZ is)
+                    (ADJP-PRD
+                        (JJ strong)
+                    )
+                )
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (S
+        (NP-SBJ
+            (PRP$ our)
+            (NNS bookings)
+        )
+        (VP
+            (VBD improved)
+            (SBAR-TMP
+                (IN as)
+                (S
+                    (NP-SBJ
+                        (DT the)
+                        (NN quarter)
+                    )
+                    (VP
+                        (VBD progressed)
+                    )
+                )
+            )
+        )
+    )
+    (CC and)
+    (S
+        (NP-SBJ
+            (NNP <NNP>)
+        )
+        (VP
+            (VBD was)
+            (ADJP-PRD
+                (RB especially)
+                (JJ good)
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (PP-TMP
+        (IN for)
+        (NP
+            (DT the)
+            (JJ full)
+            (NN quarter)
+        )
+    )
+    (, ,)
+    (S
+        (NP-SBJ
+            (PRP$ our)
+            (NNS bookings)
+        )
+        (VP
+            (VBD were)
+            (ADJP-PRD
+                (ADJP
+                    (JJR higher)
+                )
+                (PP
+                    (IN than)
+                    (NP
+                        (DT the)
+                        (JJ previous)
+                        (NN quarter)
+                    )
+                )
+            )
+        )
+    )
+    (, ,)
+    (CC and)
+    (S
+        (NP-SBJ
+            (PRP$ our)
+            (NN book-to-bill)
+            (NN ratio)
+        )
+        (VP
+            (VBD exceeded)
+            (NP
+                (CD <CD>)
+            )
+        )
+    )
+    (. .)
+    ('' '')
+)
+(TOP
+    (NP-SBJ
+        (NP
+            (NNP <NNP>)
+            (NNP <NNP>)
+        )
+        (CC and)
+        (NP
+            (DT the)
+            (NNP <NNP>)
+            (NNP <NNP>)
+            (NNP <NNP>)
+        )
+    )
+    (VP
+        (VBD came)
+        (NP-DIR
+            (NN home)
+        )
+        (NP-TMP
+            (NN yesterday)
+        )
+    )
+    (. .)
+)
+(TOP
+    (SBAR-TMP
+        (IN as)
+        (S
+            (NP-SBJ
+                (NP
+                    (DT the)
+                    (NN crowd)
+                )
+                (PP-LOC
+                    (IN outside)
+                    (NP
+                        (PRP$ his)
+                        (NN home)
+                    )
+                )
+            )
+            (VP
+                (VBD shouted)
+                (FRAG
+                    (`` ``)
+                    (NP-VOC
+                        (NNP <NNP>)
+                    )
+                    (, ,)
+                    (NP-VOC
+                        (NNP <NNP>)
+                    )
+                )
+            )
+        )
+    )
+    (, ,)
+    ('' '')
+    (NP-SBJ
+        (DT the)
+        (JJ old)
+        (NN man)
+    )
+    (VP
+        (VBD shot)
+        (NP
+            (PRP$ his)
+            (NNS fists)
+        )
+        (PP-DIR
+            (IN into)
+            (NP
+                (DT the)
+                (NN air)
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (PP-LOC
+        (IN under)
+        (NP
+            (NP
+                (DT the)
+                (NNS laws)
+            )
+            (PP
+                (IN of)
+                (NP
+                    (DT the)
+                    (NN land)
+                )
+            )
+        )
+    )
+    (, ,)
+    (S
+        (NP-SBJ
+            (DT the)
+            (NNP <NNP>)
+        )
+        (VP
+            (VBZ remains)
+            (NP-PRD
+                (DT an)
+                (JJ illegal)
+                (NN organization)
+            )
+        )
+    )
+    (, ,)
+    (CC and)
+    (S
+        (NP-SBJ
+            (PRP$ its)
+            (NNS headquarters)
+        )
+        (VP
+            (VBP are)
+            (ADVP-TMP
+                (RB still)
+            )
+            (PP-PRD
+                (IN in)
+                (NP
+                    (NP
+                        (NNP <NNP>)
+                    )
+                    (, ,)
+                    (NP
+                        (NNP <NNP>)
+                    )
+                )
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (`` ``)
+    (NP-SBJ
+        (NNS things)
+    )
+    (VP
+        (VBP have)
+        (VP
+            (VBN gone)
+            (ADVP
+                (RB too)
+                (RB far)
+                (SBAR
+                    (IN for)
+                    (S
+                        (NP-SBJ
+                            (DT the)
+                            (NN government)
+                        )
+                        (VP
+                            (TO to)
+                            (VP
+                                (VB stop)
+                                (NP
+                                    (PRP them)
+                                )
+                                (ADVP-TMP
+                                    (RB now)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (NP-SBJ
+        (NP
+            (VBG deafening)
+            (NNS chants)
+        )
+        (PP
+            (IN of)
+            (NP
+                (`` ``)
+                (NP
+                    (NNP <NNP>)
+                )
+                ('' '')
+                (CC and)
+                (`` ``)
+                (NP
+                    (NNP <NNP>)
+                    (PRP we)
+                    (NNP <NNP>)
+                )
+                ('' '')
+            )
+        )
+    )
+    (VP
+        (VBD shook)
+        (NP
+            (DT the)
+            (NN church)
+        )
+        (SBAR-TMP
+            (IN as)
+            (S
+                (NP-SBJ
+                    (DT the)
+                    (CD <CD>)
+                    (VBG aging)
+                    (NNS men)
+                )
+                (VP
+                    (VBD vowed)
+                    (SBAR
+                        (IN that)
+                        (S
+                            (NP-SBJ
+                                (DT the)
+                                (NNP <NNP>)
+                            )
+                            (VP
+                                (MD would)
+                                (VP
+                                    (VB continue)
+                                    (NP
+                                        (NP
+                                            (PRP$ its)
+                                            (NN fight)
+                                        )
+                                        (PP
+                                            (IN against)
+                                            (NP
+                                                (NP
+                                                    (DT the)
+                                                    (NN government)
+                                                )
+                                                (CC and)
+                                                (NP
+                                                    (NP
+                                                        (DT the)
+                                                        (NNS policies)
+                                                    )
+                                                    (PP
+                                                        (IN of)
+                                                        (NP
+                                                            (JJ racial)
+                                                            (NN segregation)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        (PP
+                                            (IN on)
+                                            (NP
+                                                (NP
+                                                    (DT all)
+                                                    (NNS fronts)
+                                                )
+                                                (, ,)
+                                                (PP
+                                                    (VBG including)
+                                                    (NP
+                                                        (DT the)
+                                                        (VBN armed)
+                                                        (NN struggle)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (CC but)
+    (NP-SBJ
+        (NNP <NNP>)
+    )
+    (VP
+        (MD may)
+        (ADVP
+            (RB instead)
+        )
+        (VP
+            (VB be)
+            (VP
+                (VBG creating)
+                (NP
+                    (NP
+                        (DT a)
+                        (NN climate)
+                    )
+                    (PP
+                        (IN for)
+                        (NP
+                            (NP
+                                (JJR more)
+                                (NN turmoil)
+                                (CC and)
+                                (NN uncertainty)
+                            )
+                            (PP-LOC
+                                (IN in)
+                                (NP
+                                    (DT this)
+                                    (ADJP
+                                        (RB racially)
+                                        (VBN divided)
+                                    )
+                                    (NN country)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (NP-SBJ
+        (DT the)
+        (ADJP
+            (RB newly)
+            (VBN released)
+        )
+        (NNP <NNP>)
+        (NNS leaders)
+    )
+    (ADVP
+        (RB also)
+    )
+    (VP
+        (MD will)
+        (VP
+            (VB be)
+            (PP-LOC-PRD
+                (IN under)
+                (NP
+                    (JJ enormous)
+                    (NN pressure)
+                )
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (NP-SBJ
+        (NNP <NNP>)
+    )
+    (VP
+        (VBZ has)
+        (RB n't)
+        (VP
+            (VBN forgotten)
+            (SBAR
+                (WHADVP
+                    (WRB why)
+                )
+                (S
+                    (NP-SBJ
+                        (PRP they)
+                    )
+                    (VP
+                        (VBD were)
+                        (DT all)
+                        (VP
+                            (VBN sentenced)
+                            (PP-CLR
+                                (TO to)
+                                (NP
+                                    (NN life)
+                                    (NN imprisonment)
+                                )
+                            )
+                            (PP-TMP
+                                (IN in)
+                                (NP
+                                    (DT the)
+                                    (JJ first)
+                                    (NN place)
+                                )
+                            )
+                            (: :)
+                            (FRAG
+                                (SBAR-PRP
+                                    (IN for)
+                                    (S
+                                        (NP-SBJ
+                                            (NN sabotage)
+                                            (CC and)
+                                            (NN conspiracy)
+                                        )
+                                        (VP
+                                            (TO to)
+                                            (VP
+                                                (VB overthrow)
+                                                (NP
+                                                    (DT the)
+                                                    (NN government)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (. .)
+)
+(TOP
+    (VP
+        (VBZ says)
+    )
+    (NP-SBJ
+        (NP
+            (NNP <NNP>)
+            (NNP <NNP>)
+        )
+        (, ,)
+        (NP
+            (NP
+                (NN president)
+            )
+            (PP
+                (IN of)
+                (NP
+                    (DT the)
+                    (ADJP
+                        (NNP <NNP>)
+                        (NNP <NNP>)
+                    )
+                    (NNP <NNP>)
+                    (NNP <NNP>)
+                )
+            )
+        )
+    )
+    (: :)
+    (S
+        (`` ``)
+        (NP-SBJ
+            (PRP we)
+        )
+        (VP
+            (MD will)
+            (VP
+                (VB be)
+                (VP
+                    (VBG expecting)
+                    (S
+                        (NP-SBJ
+                            (PRP them)
+                        )
+                        (VP
+                            (TO to)
+                            (VP
+                                (VB act)
+                                (PP
+                                    (IN like)
+                                    (NP
+                                        (NP
+                                            (NNS leaders)
+                                        )
+                                        (PP
+                                            (IN of)
+                                            (NP
+                                                (DT the)
+                                                (NNP <NNP>)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (. .)
+    ('' '')
+)
+(TOP
+    (NP-SBJ
+        (PRP they)
+    )
+    (ADVP-TMP
+        (RB never)
+    )
+    (VP
+        (VBD considered)
+        (S
+            (NP-SBJ
+                (PRP themselves)
+            )
+            (VP
+                (TO to)
+                (VP
+                    (VB be)
+                    (NP-PRD
+                        (NN anything)
+                        (RB else)
+                    )
+                )
+            )
+        )
+    )
+    (. .)
+)

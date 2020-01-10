@@ -1,3 +1,7 @@
+usuc(s(0),Y) :- Y is 1.
+usuc(s(X),_) :-
+       usuc(_,X).	
+	
 
 % Question 2
 succ(X,Y) :- Y is X+1.
@@ -113,4 +117,27 @@ multicolortower6(Height,List) :-
 
 
 
+mct1(1,[Block]) :-
+	block(Block).
+mct1(N,NewTower) :-
+	N > 1,
+	Nless1 is N - 1,
+	mct1(Nless1,Tower),
+	block(Block),
+	xdifferentFromList(Block,Tower),
+	NewTower = [Block|Tower].
 
+xdifferentFromList(X,[H|List]) :-
+	not(X=H),
+	xdifferentFromList(X,List).
+	xdifferentFromList(X,[]).
+
+
+
+mct(1,[Block]) :-
+block(Block).
+mct(N,NewTower) :-
+	Nless1 is N - 1,
+	mct(Nless1,Tower),
+	block(Block),
+	NewTower = [Block|Tower].

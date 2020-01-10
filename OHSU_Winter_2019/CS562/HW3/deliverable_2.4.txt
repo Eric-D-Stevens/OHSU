@@ -1,0 +1,6 @@
+Accuracy: 0.4885
+
+The embedding layer does not have enough dementionality
+to accurately distinguish between letters. The lack of 
+hidden layers in the system doesnt allow for meaningful
+relations to be drawn between sequences of characters. 
