@@ -120,8 +120,9 @@ The contents of this video directory looked like this:
 
 I needed to discover what these video files contained. I was delighted to find that `ffmpeg` was installed on the bigbird, but when using `ffplay` it was very interesting to see how `ffmpeg` attempted to produce the video on the command line using mono-spaced color characters and backgrounds. While I found this impressive, and didn’t know `ffmpeg` would do this, it was impossible to make out the video.
 
-<img src=“FFPLAY.png”>
+<img src=FFPLAY.png>
 
+![](FFPLAY.png)
 
 
 #### 1) What kind of data does it contain?
