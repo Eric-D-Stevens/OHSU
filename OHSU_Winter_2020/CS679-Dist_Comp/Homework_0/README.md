@@ -122,10 +122,50 @@ I needed to discover what these video files contained. I was delighted to find t
 
 <img src=ffplay.png>
 
-![](ffplay.png)
+I had to come up with a way of running the video files. While port forwarding had been suggested, I didn’t know whether the older broswer on the bigbird system would support the codec for the specific video files. I did, however, know that FFMPEG would support the codec, since it was attempting to generate video out on the command line in bigbird.
 
+The solution, mount the remote file system on my local machine and use my local FFMPEG to run the video files. This is acomplished using the `sshfs` utility. On my Mac I used home brew to install the `sshfs` utility by running the commands:
+
+```
+brew cask install osxfuse
+```
+followed by
+```
+brew install sshfs
+```
+
+I then created a mountin directory called `droplet` on my local machine:
+```
+mkdir droplet
+```
+
+From this point I can mount the remote file system from my local machine. This will give my local applications access to the remote files.
+
+```
+bash 21:44:51 ~  $: 
+    sshfs bigbird:/l2/corpora/IDS/IntuitiveTrip2007/videos droplet/
+
+bash 21:45:31 ~  $: 
+    ls droplet | head
+total 290816
+-rwxr-xr-x  1 5009  60029  3667562 Apr 25  2008 B_Suturing_1_capture1.avi
+-rwxr-xr-x  1 5009  60029  3519102 Apr 25  2008 B_Suturing_1_capture2.avi
+-rwxr-xr-x  1 5009  60029  2074932 Apr 25  2008 B_Suturing_2_capture1.avi
+-rwxr-xr-x  1 5009  60029  1987516 Apr 25  2008 B_Suturing_2_capture2.avi
+-rwxr-xr-x  1 5009  60029  2042886 Apr 25  2008 B_Suturing_3_capture1.avi
+-rwxr-xr-x  1 5009  60029  1954368 Apr 25  2008 B_Suturing_3_capture2.avi
+-rwxr-xr-x  1 5009  60029  2087098 Apr 25  2008 B_Suturing_4_capture1.avi
+-rwxr-xr-x  1 5009  60029  1969368 Apr 25  2008 B_Suturing_4_capture2.avi
+-rwxr-xr-x  1 5009  60029  1976614 Apr 25  2008 B_Suturing_5_capture1.avi
+``` 
+
+I can now play the videos with my local `ffplay` and see the full resolution.
 
 #### 1) What kind of data does it contain?
+
+As it turns out, this data consists of many videos of people of various skill levels attempting a suturing task with robotic arms.
+
+<img src=ffplay_full.png>
 
 
 
