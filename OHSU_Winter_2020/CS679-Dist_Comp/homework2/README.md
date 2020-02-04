@@ -3,7 +3,7 @@
 
 ## 1. Trends Over Time
 
-<img src="https://raw.githubusercontent.com/Eric-D-Stevens/OHSU/master/OHSU_Winter_2020/CS679-Dist_Comp/homework2/images/over_time.png">
+<img src="https://raw.githubusercontent.com/Eric-D-Stevens/OHSU/master/OHSU_Winter_2020/CS679-Dist_Comp/homework2/images/over_time.PNG">
 
 #### Data Collection
 
