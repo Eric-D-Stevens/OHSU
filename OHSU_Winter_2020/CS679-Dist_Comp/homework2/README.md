@@ -3,7 +3,7 @@
 
 ## 1. Trends Over Time
 
-<img src="./images/over_time.png">
+<img src="https://raw.githubusercontent.com/Eric-D-Stevens/OHSU/master/OHSU_Winter_2020/CS679-Dist_Comp/homework2/images/over_time.png">
 
 #### Data Collection
 
@@ -87,7 +87,7 @@ for mid_month in months:
 
 ## 2. Most Downloaded Papers
 
-<img src="./images/q2_table.png">
+<img src="https://raw.githubusercontent.com/Eric-D-Stevens/OHSU/master/OHSU_Winter_2020/CS679-Dist_Comp/homework2/images/q2_table.png">
 
 ### Data Collection
 
@@ -158,7 +158,7 @@ def citation_generator(doi):
 
 ## 3. Journals & Publishers
 
-<img src="./images/q3_table.png">
+<img src="https://raw.githubusercontent.com/Eric-D-Stevens/OHSU/master/OHSU_Winter_2020/CS679-Dist_Comp/homework2/images/q3_table.png">
 
 code: `./hw2/q3/(q3.py, b3.py)`
 
@@ -207,8 +207,8 @@ code: `./hw2/q4/p1/p1.py`
 The strategy used for the first two sections of question 4 was to download population data and put it in a local directory on the server. For this problem, a dataset was downloaded that contained the population of each of the world's countries in 2015. After using a similar method as earlier in the assignment to count the downloads per country, the population data was broadcasted into spark and used by a mapper to divide the count results by the country's populations. 
 
 <div>
-    <img src="./images/country_count.png" style="float: left; margin-right: 10%">
-    <img src="./images/country_rel.png" style="float: left">
+    <img src="https://raw.githubusercontent.com/Eric-D-Stevens/OHSU/master/OHSU_Winter_2020/CS679-Dist_Comp/homework2/images/country_count.png" style="float: left; margin-right: 10%">
+    <img src="https://raw.githubusercontent.com/Eric-D-Stevens/OHSU/master/OHSU_Winter_2020/CS679-Dist_Comp/homework2/images/country_rel.png" style="float: left">
 </div>
 
 
@@ -220,8 +220,8 @@ code: `./hw2/q4/p2/p2.py`
 For this problem, a dataset was downloaded that contained the population of 1000 US cities. After using a similar method as earlier in the assignment to count the downloads per city, the population data was broadcasted into spark and used by a mapper to divide the count results by the citie's populations. 
 
 <div>
-    <img src="./images/city_total.png" style="float: left; margin-right: 10%">
-    <img src="./images/city_capita.png" style="float: left">
+    <img src="https://raw.githubusercontent.com/Eric-D-Stevens/OHSU/master/OHSU_Winter_2020/CS679-Dist_Comp/homework2/images/city_total.png" style="float: left; margin-right: 10%">
+    <img src="https://raw.githubusercontent.com/Eric-D-Stevens/OHSU/master/OHSU_Winter_2020/CS679-Dist_Comp/homework2/images/city_capita.png" style="float: left">
 </div>
 
 ### 3) The Portlands
@@ -231,8 +231,8 @@ code: `./hw2/q4/p3/p3.py`
 For this final problem several filters were used in order to split the original RDD into a Portland Oregon RDD and a Portland Maine RDD. This was done by first filtering the entire dataset for strings containing “United States” and “Portland”. After obtaining all the “Portlands” of interest, the RDD was split by parsing out and filtering on geographical data in the records. 
 
 <div>
-    <img src="./images/oregon.png" style="float: left; width: 40%; margin-right: 10%">
-    <img src="./images/maine.png" style="float: left; width: 40%">
+    <img src="https://raw.githubusercontent.com/Eric-D-Stevens/OHSU/master/OHSU_Winter_2020/CS679-Dist_Comp/homework2/images/oregon.png" style="float: left; width: 40%; margin-right: 10%">
+    <img src="https://raw.githubusercontent.com/Eric-D-Stevens/OHSU/master/OHSU_Winter_2020/CS679-Dist_Comp/homework2/images/maine.png" style="float: left; width: 40%">
 </div>
 
 
