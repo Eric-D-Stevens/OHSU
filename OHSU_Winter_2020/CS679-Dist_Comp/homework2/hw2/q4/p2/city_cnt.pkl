@@ -1,0 +1,82 @@
+(lp0
+(VAshburn
+p1
+I96857
+tp2
+a(VNew York
+p3
+I73606
+tp4
+a(VEast Lansing
+p5
+I68135
+tp6
+a(VFremont
+p7
+I59389
+tp8
+a(VMountain View
+p9
+I56637
+tp10
+a(VGalloway
+p11
+I47498
+tp12
+a(VMenlo Park
+p13
+I41849
+tp14
+a(VProvo
+p15
+I35775
+tp16
+a(VLos Angeles
+p17
+I30781
+tp18
+a(VPotwin
+p19
+I27618
+tp20
+a(VPasadena
+p21
+I25347
+tp22
+a(VSan Jose
+p23
+I23640
+tp24
+a(VColumbus
+p25
+I19230
+tp26
+a(VScottsdale
+p27
+I18850
+tp28
+a(VSan Francisco
+p29
+I18762
+tp30
+a(VManassas
+p31
+I13485
+tp32
+a(VLas Vegas
+p33
+I11261
+tp34
+a(VBoston
+p35
+I10336
+tp36
+a(VN/A
+p37
+I9934
+tp38
+a(VSan Mateo
+p39
+I9307
+tp40
+a.
